@@ -1,0 +1,80 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+*$py.class
+*.so
+
+# Python distribution files
+*.egg-info/
+dist/
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+.installed.cfg
+*.egg
+.Python
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test coverage
+.coverage
+htmlcov/
+coverage.xml
+.pytest_cache/
+
+# Logs
+*.log
+
+# Config files with user data (should not be in repo)
+# Note: ~/.android-tv-tools/ is in user home directory, not in repo
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.apk
+screenshot_*.png
+*.mp4
+devices.txt
+temp.txt
+myapps.txt
+list.txt
+error_log.txt
+
+# Original Windows files
+extracted_contents/
+Android TV Tools - Aux Files/
+*.exe
+*.bat
+*.cmd
+
+# Cache directories
+.cache/
