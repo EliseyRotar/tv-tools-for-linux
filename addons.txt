@@ -1,0 +1,17 @@
+add scrpy support in option 6, so i can watch the screen live
+
+in every option that i need to choose yes or no, display the crrent option that is active, for example in custom settings there are enable/disable things, show what option is active rn, in every menu
+
+fix the system monitor btop option 13:
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    📊 Android TV System Monitor (btop)                       ║
+║                    Press Ctrl+C to exit | Refresh: 2s                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+❌ Unexpected error: can only concatenate list (not "str") to list
+
+fix option 12:
+❌ Unexpected error: 'DeviceInfo' object has no attribute 'get_all_device_info'
+
+when i launch the script it should display if its already connected to a device, and if it is it shouuld display to what device its connected
+
+create an option to disconnect fromm the device connected

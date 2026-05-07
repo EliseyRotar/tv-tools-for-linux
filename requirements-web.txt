@@ -1,0 +1,7 @@
+Flask==3.0.0
+Werkzeug==3.0.1
+requests==2.31.0
+colorama==0.4.6
+
+# Optional dependencies
+# Flask-CORS==4.0.0  # Optional: Enables CORS support for cross-origin requests
