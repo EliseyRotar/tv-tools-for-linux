@@ -1,0 +1,197 @@
+{
+  "safe": {
+    "description": "Safe to remove - No system impact",
+    "risk_level": "low",
+    "packages": [
+      {
+        "package": "com.google.android.apps.photos",
+        "name": "Google Photos",
+        "description": "Photo gallery and cloud storage"
+      },
+      {
+        "package": "com.google.android.music",
+        "name": "Google Play Music",
+        "description": "Music player (deprecated)"
+      },
+      {
+        "package": "com.google.android.videos",
+        "name": "Google Play Movies & TV",
+        "description": "Video player and store"
+      },
+      {
+        "package": "com.google.android.apps.magazines",
+        "name": "Google Play Newsstand",
+        "description": "News and magazines"
+      },
+      {
+        "package": "com.google.android.apps.books",
+        "name": "Google Play Books",
+        "description": "E-book reader"
+      },
+      {
+        "package": "com.google.android.apps.games",
+        "name": "Google Play Games",
+        "description": "Gaming platform"
+      },
+      {
+        "package": "com.google.android.feedback",
+        "name": "Google Feedback",
+        "description": "Feedback collection"
+      },
+      {
+        "package": "com.google.android.apps.tachyon",
+        "name": "Google Duo",
+        "description": "Video calling app"
+      },
+      {
+        "package": "com.android.dreams.basic",
+        "name": "Basic Dreams",
+        "description": "Screen saver"
+      },
+      {
+        "package": "com.android.dreams.phototable",
+        "name": "Photo Screensaver",
+        "description": "Photo screen saver"
+      }
+    ]
+  },
+  "caution": {
+    "description": "Use caution - May affect some features",
+    "risk_level": "medium",
+    "packages": [
+      {
+        "package": "com.google.android.gms.policy_sidecar_o",
+        "name": "Google Play Services Policy",
+        "description": "Policy component (may affect Play Services)"
+      },
+      {
+        "package": "com.google.android.partnersetup",
+        "name": "Google Partner Setup",
+        "description": "Partner configuration"
+      },
+      {
+        "package": "com.google.android.syncadapters.calendar",
+        "name": "Google Calendar Sync",
+        "description": "Calendar synchronization"
+      },
+      {
+        "package": "com.google.android.syncadapters.contacts",
+        "name": "Google Contacts Sync",
+        "description": "Contacts synchronization"
+      },
+      {
+        "package": "com.google.android.printservice.recommendation",
+        "name": "Print Service Recommendation",
+        "description": "Print service suggestions"
+      },
+      {
+        "package": "com.android.wallpaper.livepicker",
+        "name": "Live Wallpaper Picker",
+        "description": "Live wallpaper selection"
+      },
+      {
+        "package": "com.android.providers.calendar",
+        "name": "Calendar Storage",
+        "description": "Calendar data storage"
+      },
+      {
+        "package": "com.android.providers.contacts",
+        "name": "Contacts Storage",
+        "description": "Contacts data storage"
+      }
+    ]
+  },
+  "advanced": {
+    "description": "Advanced users only - May cause system instability",
+    "risk_level": "high",
+    "packages": [
+      {
+        "package": "com.google.android.gms",
+        "name": "Google Play Services",
+        "description": "Core Google services (breaks many apps)"
+      },
+      {
+        "package": "com.google.android.gsf",
+        "name": "Google Services Framework",
+        "description": "Google framework (breaks Play Store)"
+      },
+      {
+        "package": "com.android.vending",
+        "name": "Google Play Store",
+        "description": "App store (no app updates)"
+      },
+      {
+        "package": "com.google.android.webview",
+        "name": "Android System WebView",
+        "description": "Web rendering (breaks web content)"
+      },
+      {
+        "package": "com.google.android.inputmethod.latin",
+        "name": "Google Keyboard",
+        "description": "System keyboard (need alternative)"
+      }
+    ]
+  },
+  "manufacturer_specific": {
+    "samsung": [
+      {
+        "package": "com.samsung.android.bixby.agent",
+        "name": "Bixby Voice",
+        "description": "Samsung voice assistant",
+        "risk_level": "low"
+      },
+      {
+        "package": "com.samsung.android.app.spage",
+        "name": "Samsung Daily",
+        "description": "News feed",
+        "risk_level": "low"
+      },
+      {
+        "package": "com.samsung.android.game.gamehome",
+        "name": "Game Launcher",
+        "description": "Gaming hub",
+        "risk_level": "low"
+      }
+    ],
+    "xiaomi": [
+      {
+        "package": "com.miui.analytics",
+        "name": "MIUI Analytics",
+        "description": "Usage analytics",
+        "risk_level": "low"
+      },
+      {
+        "package": "com.xiaomi.mipicks",
+        "name": "GetApps",
+        "description": "Xiaomi app store",
+        "risk_level": "low"
+      },
+      {
+        "package": "com.miui.videoplayer",
+        "name": "Mi Video",
+        "description": "Video player",
+        "risk_level": "low"
+      }
+    ],
+    "amazon": [
+      {
+        "package": "com.amazon.kindle",
+        "name": "Kindle",
+        "description": "E-book reader",
+        "risk_level": "low"
+      },
+      {
+        "package": "com.amazon.avod",
+        "name": "Prime Video",
+        "description": "Video streaming",
+        "risk_level": "low"
+      },
+      {
+        "package": "com.amazon.venezia",
+        "name": "Amazon Music",
+        "description": "Music streaming",
+        "risk_level": "low"
+      }
+    ]
+  }
+}

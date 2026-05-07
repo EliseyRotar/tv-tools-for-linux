@@ -1,0 +1,597 @@
+{
+  "smarttube": {
+    "name": "SmartTube",
+    "package": "com.liskovsoft.smarttubetv.beta",
+    "category": "video",
+    "description": "Ad-free YouTube client for Android TV with SponsorBlock integration",
+    "official_url": "https://github.com/yuliskov/SmartTube",
+    "download_url": "https://github.com/yuliskov/SmartTube/releases",
+    "download_pattern": "smarttube.*stable.*\\.apk",
+    "search_query": "SmartTube stable APK download latest GitHub",
+    "notes": "Recommended for ad-free YouTube experience on Android TV",
+    "features": [
+      "No ads",
+      "SponsorBlock integration",
+      "4K support",
+      "Background playback",
+      "Custom playback speed"
+    ]
+  },
+  "projectivy_launcher": {
+    "name": "Projectivy Launcher",
+    "package": "com.spocky.projengmenu",
+    "category": "launcher",
+    "description": "Customizable launcher for Android TV with ad-free home screen",
+    "official_url": "https://play.google.com/store/apps/details?id=com.spocky.projengmenu",
+    "download_url": "https://www.apkmirror.com/apk/spocky/projectivy-launcher-android-tv/",
+    "download_pattern": "projectivy.*launcher.*\\.apk",
+    "search_query": "Projectivy Launcher APK latest",
+    "notes": "Smooth, customizable launcher tailored for TVs and projectors",
+    "features": [
+      "Ad-free home screen",
+      "Highly customizable",
+      "Smooth performance",
+      "Widget support",
+      "App shortcuts"
+    ]
+  },
+  "flauncher": {
+    "name": "FLauncher",
+    "package": "me.efesser.flauncher",
+    "category": "launcher",
+    "description": "Minimalist open-source launcher for Android TV",
+    "official_url": "https://gitlab.com/etienn01/flauncher",
+    "download_url": "https://f-droid.org/packages/me.efesser.flauncher/",
+    "download_pattern": "flauncher.*\\.apk",
+    "search_query": "FLauncher APK F-Droid",
+    "notes": "Simple, fast, and open-source launcher",
+    "features": [
+      "Minimalist design",
+      "Open source",
+      "Fast performance",
+      "No ads",
+      "Lightweight"
+    ]
+  },
+  "google_tv_launcher": {
+    "name": "Google TV Launcher",
+    "package": "com.google.android.tvlauncher",
+    "category": "launcher",
+    "description": "Official Google TV launcher with content recommendations",
+    "official_url": "https://play.google.com/store/apps/details?id=com.google.android.tvlauncher",
+    "download_url": "https://www.apkmirror.com/apk/google-inc/google-tv-home-android-tv/",
+    "download_pattern": "google.*tv.*launcher.*\\.apk",
+    "search_query": "Google TV Launcher APK latest",
+    "notes": "Official Google TV home screen experience",
+    "features": [
+      "Content recommendations",
+      "Google Assistant integration",
+      "Watchlist",
+      "Live TV integration",
+      "Personalized content"
+    ]
+  },
+  "atv_launcher_pro": {
+    "name": "ATV Launcher Pro",
+    "package": "ca.dstudio.atvlauncher.pro",
+    "category": "launcher",
+    "description": "Fast and elegant launcher for Android TV",
+    "official_url": "https://play.google.com/store/apps/details?id=ca.dstudio.atvlauncher.pro",
+    "download_url": "https://www.apkmirror.com/apk/dstudio/atv-launcher-pro/",
+    "download_pattern": "atv.*launcher.*pro.*\\.apk",
+    "search_query": "ATV Launcher Pro APK latest",
+    "notes": "Performance-focused launcher with customizable widgets",
+    "features": [
+      "Fast performance",
+      "Ad-free",
+      "Customizable widgets",
+      "Organized folders",
+      "High-quality icons"
+    ]
+  },
+  "tivimate": {
+    "name": "TiviMate IPTV Player",
+    "package": "ar.tvplayer.tv",
+    "category": "iptv",
+    "description": "Feature-rich IPTV player for Android TV",
+    "official_url": "https://play.google.com/store/apps/details?id=ar.tvplayer.tv",
+    "download_url": "https://www.apkmirror.com/apk/armobsoft-fze/tivimate-iptv-player/",
+    "download_pattern": "tivimate.*\\.apk",
+    "search_query": "TiviMate IPTV Player APK latest",
+    "notes": "Requires M3U playlist from IPTV provider",
+    "features": [
+      "EPG support",
+      "Multiple playlists",
+      "Catch-up TV",
+      "Recording",
+      "Parental control"
+    ]
+  },
+  "kodi": {
+    "name": "Kodi",
+    "package": "org.xbmc.kodi",
+    "category": "media_center",
+    "description": "Open-source media center for Android TV",
+    "official_url": "https://kodi.tv/download/android/",
+    "download_url": "https://kodi.tv/download/android/",
+    "download_pattern": "kodi.*\\.apk",
+    "search_query": "Kodi Android TV APK official download",
+    "notes": "Powerful media center with extensive addon support",
+    "features": [
+      "Media library management",
+      "Addon support",
+      "Network streaming",
+      "PVR support",
+      "Customizable skins"
+    ]
+  },
+  "jellyfin": {
+    "name": "Jellyfin for Android TV",
+    "package": "org.jellyfin.androidtv",
+    "category": "media_center",
+    "description": "Open-source media server client for Android TV",
+    "official_url": "https://jellyfin.org/",
+    "download_url": "https://www.apkmirror.com/apk/jellyfin/jellyfin-for-android-tv/",
+    "download_pattern": "jellyfin.*android.*tv.*\\.apk",
+    "search_query": "Jellyfin Android TV APK latest",
+    "notes": "Free and open-source alternative to Plex and Emby",
+    "features": [
+      "No fees or tracking",
+      "Open source",
+      "Media library",
+      "Live TV support",
+      "Subtitle support"
+    ]
+  },
+  "plex": {
+    "name": "Plex",
+    "package": "com.plexapp.android",
+    "category": "media_center",
+    "description": "Media server and streaming platform",
+    "official_url": "https://www.plex.tv/",
+    "download_url": "https://play.google.com/store/apps/details?id=com.plexapp.android",
+    "download_pattern": "plex.*\\.apk",
+    "search_query": "Plex Android TV APK latest",
+    "notes": "Stream your personal media and free content",
+    "features": [
+      "Personal media server",
+      "Free streaming content",
+      "Live TV",
+      "DVR support",
+      "Cross-platform sync"
+    ]
+  },
+  "emby": {
+    "name": "Emby for Android TV",
+    "package": "tv.emby.embyatv",
+    "category": "media_center",
+    "description": "Media server client for Android TV",
+    "official_url": "https://emby.media/",
+    "download_url": "https://www.apkmirror.com/apk/emby-media/emby-for-android-tv/",
+    "download_pattern": "emby.*android.*tv.*\\.apk",
+    "search_query": "Emby Android TV APK latest",
+    "notes": "Requires Emby Server and optional Premiere subscription",
+    "features": [
+      "Media library",
+      "Live TV support",
+      "DVR functionality",
+      "Parental controls",
+      "Sync and download"
+    ]
+  },
+  "tdtchannels": {
+    "name": "TDTChannels",
+    "package": "com.example.tdtchannels",
+    "category": "iptv",
+    "description": "Spanish free-to-air TV channels player",
+    "official_url": "https://github.com/LaQuay/TDTChannels",
+    "download_url": "https://github.com/LaQuay/TDTChannels",
+    "download_pattern": "tdtchannels.*\\.apk",
+    "search_query": "TDTChannels APK GitHub LaQuay",
+    "notes": "Access to Spanish DTT channels",
+    "features": [
+      "Spanish TV channels",
+      "Free-to-air content",
+      "EPG support",
+      "Channel list",
+      "Open source"
+    ]
+  },
+  "aurora_store": {
+    "name": "Aurora Store",
+    "package": "com.aurora.store",
+    "category": "app_store",
+    "description": "Open-source alternative to Google Play Store",
+    "official_url": "https://gitlab.com/AuroraOSS/AuroraStore",
+    "download_url": "https://www.apkmirror.com/apk/aurora-oss/aurora-store-gitlab-version/",
+    "download_pattern": "aurora.*store.*\\.apk",
+    "search_query": "Aurora Store APK latest GitLab",
+    "notes": "Access Play Store apps without Google account",
+    "features": [
+      "No Google account required",
+      "Anonymous downloads",
+      "Open source",
+      "Material design",
+      "App updates"
+    ]
+  },
+  "aptoide_tv": {
+    "name": "Aptoide TV",
+    "package": "cm.aptoide.pt",
+    "category": "app_store",
+    "description": "Independent app store for Android TV",
+    "official_url": "https://tv.aptoide.com/",
+    "download_url": "https://tv.aptoide.com/",
+    "download_pattern": "aptoide.*tv.*\\.apk",
+    "search_query": "Aptoide TV APK official download",
+    "notes": "Alternative app store optimized for TV",
+    "features": [
+      "TV-optimized interface",
+      "Independent app store",
+      "No registration required",
+      "App discovery",
+      "Regular updates"
+    ]
+  },
+  "play_store": {
+    "name": "Google Play Store",
+    "package": "com.android.vending",
+    "category": "app_store",
+    "description": "Official Google Play Store for Android",
+    "official_url": "https://play.google.com/",
+    "download_url": "https://www.apkmirror.com/apk/google-inc/google-play-store/",
+    "download_pattern": "google.*play.*store.*\\.apk",
+    "search_query": "Google Play Store APK latest",
+    "notes": "Requires Google Services Framework and Google Play Services",
+    "features": [
+      "Official app store",
+      "Automatic updates",
+      "In-app purchases",
+      "App reviews",
+      "Content filtering"
+    ],
+    "dependencies": [
+      "com.google.android.gsf",
+      "com.google.android.gms"
+    ]
+  },
+  "shizuku": {
+    "name": "Shizuku",
+    "package": "moe.shizuku.privileged.api",
+    "category": "system",
+    "description": "System API access for apps without root",
+    "official_url": "https://github.com/RikkaApps/Shizuku",
+    "download_url": "https://github.com/RikkaApps/Shizuku/releases",
+    "download_pattern": "shizuku.*release.*\\.apk",
+    "search_query": "Shizuku APK latest release download GitHub RikkaApps",
+    "notes": "Enables elevated permissions for compatible apps via ADB",
+    "features": [
+      "No root required",
+      "System API access",
+      "ADB-based",
+      "App permission management",
+      "Developer tools"
+    ],
+    "setup_instructions": [
+      "Install Shizuku APK",
+      "Enable USB debugging on device",
+      "Connect device via ADB",
+      "Run: adb shell sh /sdcard/Android/data/moe.shizuku.privileged.api/start.sh",
+      "Grant permissions in Shizuku app"
+    ]
+  },
+  "stremio": {
+    "name": "Stremio",
+    "package": "com.stremio.one",
+    "category": "video",
+    "description": "Video streaming platform with addon support",
+    "official_url": "https://www.stremio.com/",
+    "download_url": "https://www.stremio.com/downloads",
+    "download_pattern": "stremio.*\\.apk",
+    "search_query": "Stremio Android TV APK latest download APKMirror",
+    "notes": "Supports Torrentio and other addons for streaming",
+    "features": [
+      "Addon support",
+      "Torrent streaming",
+      "Library management",
+      "Trakt integration",
+      "Subtitle support"
+    ],
+    "addon_info": {
+      "torrentio": {
+        "name": "Torrentio",
+        "description": "Torrent streaming addon for Stremio",
+        "config_url": "https://torrentio.strem.fun/configure",
+        "notes": "Configure Torrentio addon in browser, then install to Stremio"
+      }
+    }
+  },
+  "adguard_tv": {
+    "name": "AdGuard for Android TV",
+    "package": "com.adguard.android.contentblocker",
+    "category": "utility",
+    "description": "Ad blocker for Android TV",
+    "official_url": "https://adguard.com/en/adguard-android-tv/overview.html",
+    "download_url": "https://adguard.com/en/adguard-android-tv/overview.html",
+    "download_pattern": "adguard.*tv.*\\.apk",
+    "search_query": "AdGuard Android TV APK official download",
+    "notes": "System-wide ad blocking for Android TV",
+    "features": [
+      "System-wide ad blocking",
+      "DNS filtering",
+      "HTTPS filtering",
+      "Custom filters",
+      "Statistics"
+    ]
+  },
+  "button_mapper": {
+    "name": "Button Mapper",
+    "package": "flar2.homebutton",
+    "category": "utility",
+    "description": "Remap hardware buttons to custom actions",
+    "official_url": "https://play.google.com/store/apps/details?id=flar2.homebutton",
+    "download_url": "https://www.apkmirror.com/apk/flar2/button-mapper-remap-your-keys/",
+    "download_pattern": "button.*mapper.*\\.apk",
+    "search_query": "Button Mapper APK latest flar2",
+    "notes": "Remap volume buttons, Bixby, and other hardware buttons",
+    "features": [
+      "Remap hardware buttons",
+      "Single/double/long press",
+      "Launch apps or shortcuts",
+      "No root required",
+      "Gamepad support"
+    ]
+  },
+  "downloader": {
+    "name": "Downloader by AFTVnews",
+    "package": "com.esaba.downloader",
+    "category": "utility",
+    "description": "Download files and APKs directly on Android TV",
+    "official_url": "https://play.google.com/store/apps/details?id=com.esaba.downloader",
+    "download_url": "https://play.google.com/store/apps/details?id=com.esaba.downloader",
+    "download_pattern": "downloader.*\\.apk",
+    "search_query": "Downloader AFTVnews APK latest",
+    "notes": "Essential tool for sideloading apps on Android TV",
+    "features": [
+      "Download files via URL",
+      "Built-in file manager",
+      "Short code support",
+      "TV-optimized interface",
+      "APK installation"
+    ]
+  },
+  "mx_player": {
+    "name": "MX Player",
+    "package": "com.mxtech.videoplayer.ad",
+    "category": "video",
+    "description": "Popular video player for Android",
+    "official_url": "https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.ad",
+    "download_url": "https://www.apkmirror.com/apk/j2-interactive/mx-player/",
+    "download_pattern": "mx.*player.*\\.apk",
+    "search_query": "MX Player APK latest",
+    "notes": "Supports wide range of video formats",
+    "features": [
+      "Hardware acceleration",
+      "Multi-core decoding",
+      "Subtitle support",
+      "Gesture controls",
+      "Network streaming"
+    ]
+  },
+  "vlc": {
+    "name": "VLC for Android",
+    "package": "org.videolan.vlc",
+    "category": "video",
+    "description": "Open-source media player",
+    "official_url": "https://www.videolan.org/vlc/download-android.html",
+    "download_url": "https://www.apkmirror.com/apk/videolan/vlc/",
+    "download_pattern": "vlc.*\\.apk",
+    "search_query": "VLC Android APK official download",
+    "notes": "Plays most video and audio formats",
+    "features": [
+      "All formats support",
+      "Network streaming",
+      "Subtitle support",
+      "Audio/video sync",
+      "Open source"
+    ]
+  },
+  "x_plore": {
+    "name": "X-plore File Manager",
+    "package": "com.lonelycatgames.Xplore",
+    "category": "utility",
+    "description": "Dual-pane file manager for Android TV",
+    "official_url": "https://play.google.com/store/apps/details?id=com.lonelycatgames.Xplore",
+    "download_url": "https://www.apkmirror.com/apk/lonely-cat-games/x-plore-file-manager/",
+    "download_pattern": "x.*plore.*\\.apk",
+    "search_query": "X-plore File Manager APK latest",
+    "notes": "TV-friendly file manager with network support",
+    "features": [
+      "Dual-pane interface",
+      "Network storage",
+      "Cloud storage",
+      "Archive support",
+      "Root access"
+    ]
+  },
+  "solid_explorer": {
+    "name": "Solid Explorer",
+    "package": "pl.solidexplorer2",
+    "category": "utility",
+    "description": "Modern file manager with Material Design",
+    "official_url": "https://play.google.com/store/apps/details?id=pl.solidexplorer2",
+    "download_url": "https://www.apkmirror.com/apk/neatbytes/solid-explorer-file-manager/",
+    "download_pattern": "solid.*explorer.*\\.apk",
+    "search_query": "Solid Explorer APK latest",
+    "notes": "Premium file manager with 14-day trial",
+    "features": [
+      "Material Design",
+      "Dual-pane browser",
+      "Cloud storage support",
+      "FTP/SFTP/SMB",
+      "Archive support"
+    ]
+  },
+  "send_files_to_tv": {
+    "name": "Send Files to TV",
+    "package": "com.yablio.sendfilestotv",
+    "category": "utility",
+    "description": "Transfer files between devices on local network",
+    "official_url": "https://play.google.com/store/apps/details?id=com.yablio.sendfilestotv",
+    "download_url": "https://www.apkmirror.com/apk/yablio/send-files-to-tv/",
+    "download_pattern": "send.*files.*tv.*\\.apk",
+    "search_query": "Send Files to TV APK latest",
+    "notes": "Easy file transfer without cables",
+    "features": [
+      "WiFi file transfer",
+      "No internet required",
+      "Fast transfer",
+      "Multiple devices",
+      "Simple interface"
+    ]
+  },
+  "halauncher": {
+    "name": "HALauncher",
+    "package": "net.i.akihiro.halauncher",
+    "category": "launcher",
+    "description": "Lightweight launcher for displaying non-Android TV apps",
+    "official_url": "https://www.apkmirror.com/apk/ito-akihiro/halauncher-android-tv/",
+    "download_url": "https://www.apkmirror.com/apk/ito-akihiro/halauncher-android-tv/",
+    "download_pattern": "halauncher.*\\.apk",
+    "search_query": "HALauncher Android TV APK latest",
+    "notes": "Simple launcher for sideloaded apps",
+    "features": [
+      "Display non-TV apps",
+      "Lightweight",
+      "Fast performance",
+      "Simple interface",
+      "Customizable"
+    ]
+  },
+  "wolf_launcher": {
+    "name": "Wolf Launcher",
+    "package": "com.wolf.firelauncher",
+    "category": "launcher",
+    "description": "Ad-free replacement launcher for Fire TV and Android TV",
+    "official_url": "https://apkpure.com/wolf-launcher/com.wolf.firelauncher",
+    "download_url": "https://apkpure.com/wolf-launcher/com.wolf.firelauncher",
+    "download_pattern": "wolf.*launcher.*\\.apk",
+    "search_query": "Wolf Launcher APK latest version",
+    "notes": "Streamlined ad-free interface for Fire TV",
+    "features": [
+      "Ad-free interface",
+      "Fast performance",
+      "App organization",
+      "Clean design",
+      "Fire TV optimized"
+    ]
+  },
+  "blokada": {
+    "name": "Blokada",
+    "package": "org.blokada.sex",
+    "category": "utility",
+    "description": "DNS-based ad blocker and VPN for Android",
+    "official_url": "https://play.google.com/store/apps/details?id=org.blokada.sex",
+    "download_url": "https://www.apkmirror.com/apk/blocka-ab/blokada-cloud/",
+    "download_pattern": "blokada.*\\.apk",
+    "search_query": "Blokada ad blocker APK latest",
+    "notes": "System-wide ad blocking with DNS filtering",
+    "features": [
+      "DNS ad blocking",
+      "Built-in VPN",
+      "No root required",
+      "Open source",
+      "Privacy protection"
+    ]
+  },
+  "iptv_smarters_pro": {
+    "name": "IPTV Smarters Pro",
+    "package": "com.smarters.smarterspro",
+    "category": "iptv",
+    "description": "Advanced IPTV player with M3U and JSON support",
+    "official_url": "https://play.google.com/store/apps/details?id=com.smarters.smarterspro",
+    "download_url": "https://www.apkmirror.com/apk/whmcs-smarters/whmcs-iptv-smarters-pro/",
+    "download_pattern": "iptv.*smarters.*pro.*\\.apk",
+    "search_query": "IPTV Smarters Pro APK latest",
+    "notes": "Requires IPTV subscription from provider",
+    "features": [
+      "M3U playlist support",
+      "EPG support",
+      "VOD and series",
+      "Catch-up TV",
+      "Multi-screen support"
+    ]
+  },
+  "perfect_player": {
+    "name": "Perfect Player IPTV",
+    "package": "com.niklabs.pp",
+    "category": "iptv",
+    "description": "Set-top box style IPTV player for Android TV",
+    "official_url": "https://www.apkmirror.com/apk/niklabs-software/perfect-player-iptv/",
+    "download_url": "https://www.apkmirror.com/apk/niklabs-software/perfect-player-iptv/",
+    "download_pattern": "perfect.*player.*\\.apk",
+    "search_query": "Perfect Player IPTV APK latest",
+    "notes": "Advanced IPTV player with EPG support",
+    "features": [
+      "M3U playlist support",
+      "XMLTV EPG",
+      "Channel logos",
+      "Parental control",
+      "Recording support"
+    ]
+  },
+  "jellyfin": {
+    "name": "Jellyfin for Android TV",
+    "package": "org.jellyfin.androidtv",
+    "category": "media_center",
+    "description": "Open-source media server client for Android TV",
+    "official_url": "https://jellyfin.org/",
+    "download_url": "https://www.apkmirror.com/apk/jellyfin/jellyfin-for-android-tv/",
+    "download_pattern": "jellyfin.*android.*tv.*\\.apk",
+    "search_query": "Jellyfin Android TV APK latest",
+    "notes": "Free and open-source alternative to Plex and Emby",
+    "features": [
+      "No fees or tracking",
+      "Open source",
+      "Media library",
+      "Live TV support",
+      "Subtitle support"
+    ]
+  },
+  "plex": {
+    "name": "Plex",
+    "package": "com.plexapp.android",
+    "category": "media_center",
+    "description": "Media server and streaming platform",
+    "official_url": "https://www.plex.tv/",
+    "download_url": "https://play.google.com/store/apps/details?id=com.plexapp.android",
+    "download_pattern": "plex.*\\.apk",
+    "search_query": "Plex Android TV APK latest",
+    "notes": "Stream your personal media and free content",
+    "features": [
+      "Personal media server",
+      "Free streaming content",
+      "Live TV",
+      "DVR support",
+      "Cross-platform sync"
+    ]
+  },
+  "emby": {
+    "name": "Emby for Android TV",
+    "package": "tv.emby.embyatv",
+    "category": "media_center",
+    "description": "Media server client for Android TV",
+    "official_url": "https://emby.media/",
+    "download_url": "https://www.apkmirror.com/apk/emby-media/emby-for-android-tv/",
+    "download_pattern": "emby.*android.*tv.*\\.apk",
+    "search_query": "Emby Android TV APK latest",
+    "notes": "Requires Emby Server and optional Premiere subscription",
+    "features": [
+      "Media library",
+      "Live TV support",
+      "DVR functionality",
+      "Parental controls",
+      "Sync and download"
+    ]
+  }
+}

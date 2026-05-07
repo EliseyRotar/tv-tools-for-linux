@@ -1,0 +1,209 @@
+{
+  "connection_failed": {
+    "pattern": "(connection refused|cannot connect|failed to connect|unable to connect|connection timed out)",
+    "title": "Connection Failed",
+    "description": "Unable to establish connection with the Android TV device",
+    "solutions": [
+      "Verify the IP address is correct and the device is on the same network",
+      "Enable USB debugging in Developer Options on your Android TV",
+      "Enable Network debugging (ADB over network) in Developer Options",
+      "Check if port 5555 is open on the device (firewall/router settings)",
+      "Try restarting ADB server: disconnect, then reconnect"
+    ],
+    "troubleshooting_guide": "https://developer.android.com/studio/command-line/adb#wireless"
+  },
+  "installation_failed": {
+    "pattern": "(installation failed|install_failed|install failed|failed to install|cannot install|apk.*failed)",
+    "title": "Installation Failed",
+    "description": "APK installation was unsuccessful",
+    "solutions": [
+      "Enable 'Install from Unknown Sources' in device settings",
+      "Check if there is enough storage space on the device",
+      "Verify the APK file is not corrupted (try re-downloading)",
+      "Uninstall the existing version first if upgrading",
+      "Check if the APK is compatible with your device architecture (ARM/x86)"
+    ],
+    "troubleshooting_guide": "https://developer.android.com/studio/command-line/adb#pm"
+  },
+  "permission_denied": {
+    "pattern": "(permission denied|access denied|insufficient permissions|not permitted)",
+    "title": "Permission Denied",
+    "description": "Insufficient permissions to perform the operation",
+    "solutions": [
+      "Ensure USB debugging is enabled on the device",
+      "Check if ADB has proper authorization (accept prompt on TV)",
+      "Try running the command with elevated privileges if needed",
+      "Verify the file/directory permissions on the device",
+      "Restart ADB server and reconnect to the device"
+    ],
+    "troubleshooting_guide": "https://developer.android.com/studio/command-line/adb#security"
+  },
+  "device_not_found": {
+    "pattern": "(device not found|no devices|device offline|device unauthorized)",
+    "title": "Device Not Found",
+    "description": "No Android TV device detected or device is offline",
+    "solutions": [
+      "Connect to the device using its IP address first",
+      "Check if the device is powered on and connected to network",
+      "Verify USB debugging is enabled in Developer Options",
+      "Accept the ADB authorization prompt on your TV screen",
+      "Try using the network scanner to find your device IP"
+    ],
+    "troubleshooting_guide": "https://developer.android.com/studio/command-line/adb#devicestatus"
+  },
+  "adb_not_found": {
+    "pattern": "(adb.*not found|command not found.*adb|adb.*no such file)",
+    "title": "ADB Not Found",
+    "description": "Android Debug Bridge (ADB) is not installed on your system",
+    "solutions": [
+      "Install ADB using your package manager (the tool can do this for you)",
+      "Verify ADB is in your system PATH",
+      "Restart your terminal after installation",
+      "Check if android-tools or android-sdk-platform-tools package is installed"
+    ],
+    "troubleshooting_guide": "https://developer.android.com/studio/command-line/adb"
+  },
+  "timeout": {
+    "pattern": "(timeout|timed out|operation.*timeout|command.*timeout)",
+    "title": "Operation Timed Out",
+    "description": "The operation took too long and was cancelled",
+    "solutions": [
+      "Check your network connection stability",
+      "Try the operation again with a longer timeout",
+      "Verify the device is responsive and not frozen",
+      "Check if the device has sufficient resources (RAM/CPU)",
+      "Try restarting the device and reconnecting"
+    ],
+    "troubleshooting_guide": null
+  },
+  "file_not_found": {
+    "pattern": "(file not found|no such file|cannot find|does not exist)",
+    "title": "File Not Found",
+    "description": "The specified file or directory does not exist",
+    "solutions": [
+      "Verify the file path is correct and the file exists",
+      "Check for typos in the file name or path",
+      "Ensure you have the correct permissions to access the file",
+      "Use absolute paths instead of relative paths",
+      "Check if the file was moved or deleted"
+    ],
+    "troubleshooting_guide": null
+  },
+  "insufficient_storage": {
+    "pattern": "(insufficient storage|not enough space|storage.*full|no space left)",
+    "title": "Insufficient Storage",
+    "description": "Not enough storage space available on the device",
+    "solutions": [
+      "Clear application cache to free up space",
+      "Uninstall unused applications",
+      "Delete unnecessary files or media",
+      "Move apps to external storage if supported",
+      "Use the storage management feature to identify large files"
+    ],
+    "troubleshooting_guide": null
+  },
+  "package_not_found": {
+    "pattern": "(package.*not found|unknown package|package does not exist)",
+    "title": "Package Not Found",
+    "description": "The specified application package is not installed",
+    "solutions": [
+      "Verify the package name is correct (check for typos)",
+      "List installed packages to find the correct package name",
+      "Install the application first before trying to manage it",
+      "Check if the package was recently uninstalled",
+      "Use the package search feature to find the correct name"
+    ],
+    "troubleshooting_guide": null
+  },
+  "network_error": {
+    "pattern": "(network error|network unreachable|connection reset|host unreachable)",
+    "title": "Network Error",
+    "description": "Network connectivity issue detected",
+    "solutions": [
+      "Check your internet connection",
+      "Verify both PC and device are on the same network",
+      "Check router/firewall settings",
+      "Try disabling VPN if active",
+      "Restart your router and reconnect devices"
+    ],
+    "troubleshooting_guide": null
+  },
+  "download_failed": {
+    "pattern": "(download failed|failed to download|download error|cannot download)",
+    "title": "Download Failed",
+    "description": "Failed to download the requested file",
+    "solutions": [
+      "Check your internet connection",
+      "Verify the download URL is still valid",
+      "Try downloading from an alternative source",
+      "Check if you have write permissions in the download directory",
+      "Disable any download managers or proxies that might interfere"
+    ],
+    "troubleshooting_guide": null
+  },
+  "invalid_apk": {
+    "pattern": "(invalid apk|corrupted apk|malformed apk|apk.*invalid)",
+    "title": "Invalid APK File",
+    "description": "The APK file is corrupted or invalid",
+    "solutions": [
+      "Re-download the APK file from a trusted source",
+      "Verify the file downloaded completely (check file size)",
+      "Check if the APK is compatible with Android TV",
+      "Scan the APK for malware before installation",
+      "Try downloading from the official source"
+    ],
+    "troubleshooting_guide": null
+  },
+  "signature_mismatch": {
+    "pattern": "(signature.*mismatch|signatures do not match|certificate.*mismatch)",
+    "title": "Signature Mismatch",
+    "description": "APK signature does not match the installed version",
+    "solutions": [
+      "Uninstall the existing version completely before installing",
+      "Use the same signing key if you're a developer",
+      "Download the APK from the same source as the original",
+      "Clear app data before uninstalling if the issue persists",
+      "Check if the app is a system app (may require special handling)"
+    ],
+    "troubleshooting_guide": null
+  },
+  "dependency_missing": {
+    "pattern": "(dependency.*not found|missing dependency|requires.*not installed)",
+    "title": "Missing Dependency",
+    "description": "A required software dependency is not installed",
+    "solutions": [
+      "Install the missing dependency using your package manager",
+      "The tool can automatically install dependencies for you",
+      "Check the documentation for manual installation steps",
+      "Verify your distribution is supported",
+      "Update your package manager cache and try again"
+    ],
+    "troubleshooting_guide": null
+  },
+  "unauthorized": {
+    "pattern": "(unauthorized|not authorized|authorization.*failed|auth.*failed)",
+    "title": "Unauthorized Access",
+    "description": "Device has not authorized this computer for ADB access",
+    "solutions": [
+      "Check your TV screen for an authorization prompt",
+      "Accept the 'Allow USB debugging' prompt on the device",
+      "Try disconnecting and reconnecting to trigger the prompt",
+      "Clear ADB keys on the device and reconnect",
+      "Ensure 'USB debugging' is enabled in Developer Options"
+    ],
+    "troubleshooting_guide": "https://developer.android.com/studio/command-line/adb#security"
+  },
+  "generic_error": {
+    "pattern": ".*",
+    "title": "Error Occurred",
+    "description": "An unexpected error occurred",
+    "solutions": [
+      "Check the error message for specific details",
+      "Try the operation again",
+      "Restart ADB server and reconnect to the device",
+      "Check the logs for more detailed error information",
+      "Search online for the specific error message"
+    ],
+    "troubleshooting_guide": null
+  }
+}
