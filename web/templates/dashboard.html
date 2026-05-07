@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TV Tools for Linux{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h1>
+    </div>
+</div>
+
+<div class="row mb-4" id="connectionSection">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-plug"></i> Device Connection</h5>
+            </div>
+            <div class="card-body">
+                <form id="connectForm">
+                    <div class="mb-3">
+                        <label for="ipAddress" class="form-label">IP Address</label>
+                        <input type="text" class="form-control" id="ipAddress" placeholder="192.168.1.100" required>
+                        <div class="form-text">Enter your Android TV's IP address</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="port" class="form-label">Port</label>
+                        <input type="number" class="form-control" id="port" value="5555">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="connectBtn">
+                        <i class="bi bi-plug"></i> Connect
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="scanBtn">
+                        <i class="bi bi-search"></i> Scan Network
+                    </button>
+                </form>
+                
+                <!-- Scan Results -->
+                <div id="scanResults" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Device Information</h5>
+            </div>
+            <div class="card-body" id="deviceInfo">
+                <p class="text-muted">No device connected</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="metricsSection" style="display: none;">
+    <div class="col-md-3 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-cpu display-4 text-primary"></i>
+                <h5 class="card-title mt-2">CPU Usage</h5>
+                <h2 id="cpuUsage">--</h2>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-memory display-4 text-success"></i>
+                <h5 class="card-title mt-2">Memory</h5>
+                <h2 id="memoryUsage">--</h2>
+                <small class="text-muted" id="memoryDetails"></small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-hdd display-4 text-warning"></i>
+                <h5 class="card-title mt-2">Storage</h5>
+                <h2 id="storageUsage">--</h2>
+                <small class="text-muted" id="storageDetails"></small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3" id="batteryCard">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-battery-charging display-4 text-info"></i>
+                <h5 class="card-title mt-2">Battery</h5>
+                <h2 id="batteryLevel">--</h2>
+                <small class="text-muted" id="batteryStatus"></small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="processesSection" style="display: none;">
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-graph-up"></i> Historical Charts</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <canvas id="cpuChart"></canvas>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <canvas id="memoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <canvas id="storageChart"></canvas>
+                    </div>
+                    <div class="col-md-6 mb-3" id="batteryChartCol">
+                        <canvas id="batteryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-list-task"></i> Top Processes</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>PID</th>
+                                <th>Name</th>
+                                <th>CPU %</th>
+                                <th>Memory %</th>
+                            </tr>
+                        </thead>
+                        <tbody id="processesTable">
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">No data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

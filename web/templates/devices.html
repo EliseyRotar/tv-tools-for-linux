@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Device Management - TV Tools for Linux{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4"><i class="bi bi-hdd-network"></i> Multi-Device Management</h1>
+
+    <!-- Connected Devices -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-list"></i> Connected Devices</h5>
+        </div>
+        <div class="card-body">
+            <div id="loadingDevices" class="text-center py-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div id="devicesContainer" style="display: none;">
+                <div class="row" id="devicesList">
+                </div>
+            </div>
+
+            <div id="noDevices" style="display: none;" class="text-center py-5">
+                <i class="bi bi-hdd-network" style="font-size: 3rem;"></i>
+                <p class="mt-2">No devices connected</p>
+                <p class="text-muted">Connect a device from the Dashboard to get started</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Device -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Add New Device</h5>
+        </div>
+        <div class="card-body">
+            <form id="addDeviceForm" class="row g-3">
+                <div class="col-md-5">
+                    <label for="newIpAddress" class="form-label">IP Address</label>
+                    <input type="text" class="form-control" id="newIpAddress" placeholder="192.168.1.100" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="newPort" class="form-label">Port</label>
+                    <input type="number" class="form-control" id="newPort" value="5555">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-plus-circle"></i> Add Device
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/devices.js') }}"></script>
+{% endblock %}

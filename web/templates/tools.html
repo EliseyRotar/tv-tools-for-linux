@@ -1,0 +1,515 @@
+{% extends "base.html" %}
+
+{% block title %}Tools - TV Tools for Linux{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4"><i class="bi bi-tools"></i> Tools & Utilities</h1>
+
+    <div class="row">
+        <!-- Bloatware Removal -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-trash"></i> Bloatware Removal</h5>
+                </div>
+                <div class="card-body">
+                    <p>Remove pre-installed bloatware apps safely</p>
+                    <div class="mb-3">
+                        <label for="bloatwareCategory" class="form-label">Category</label>
+                        <select class="form-select" id="bloatwareCategory">
+                            <option value="safe">Safe (Low Risk)</option>
+                            <option value="caution">Caution (Medium Risk)</option>
+                            <option value="advanced">Advanced (High Risk)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary w-100 mb-2" onclick="listBloatware()">
+                        <i class="bi bi-list"></i> List Bloatware
+                    </button>
+                    <button class="btn btn-danger w-100" onclick="removeBloatware()">
+                        <i class="bi bi-trash"></i> Remove Category
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Launcher -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-rocket-takeoff"></i> App Launcher</h5>
+                </div>
+                <div class="card-body">
+                    <p>Launch apps and open settings pages</p>
+                    <div class="mb-3">
+                        <label for="commonApp" class="form-label">Common Apps</label>
+                        <select class="form-select" id="commonApp">
+                            <option value="">Select an app...</option>
+                            <option value="netflix">Netflix</option>
+                            <option value="youtube">YouTube</option>
+                            <option value="prime_video">Prime Video</option>
+                            <option value="disney_plus">Disney+</option>
+                            <option value="plex">Plex</option>
+                            <option value="kodi">Kodi</option>
+                            <option value="smarttube">SmartTube</option>
+                            <option value="spotify">Spotify</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-success w-100 mb-3" onclick="launchCommonApp()">
+                        <i class="bi bi-play-circle"></i> Launch App
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label for="settingsPage" class="form-label">Settings Pages</label>
+                        <select class="form-select" id="settingsPage">
+                            <option value="">Select settings...</option>
+                            <option value="wifi">WiFi Settings</option>
+                            <option value="display">Display Settings</option>
+                            <option value="apps">Apps Settings</option>
+                            <option value="storage">Storage Settings</option>
+                            <option value="sound">Sound Settings</option>
+                            <option value="network">Network Settings</option>
+                            <option value="bluetooth">Bluetooth Settings</option>
+                            <option value="developer">Developer Options</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="openSettingsPage()">
+                        <i class="bi bi-gear"></i> Open Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Power Management -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-power"></i> Power Management</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <button class="btn btn-success w-100" onclick="wakeDevice()">
+                                <i class="bi bi-sun"></i> Wake
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-secondary w-100" onclick="sleepDevice()">
+                                <i class="bi bi-moon"></i> Sleep
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-warning w-100" onclick="rebootDevice()">
+                                <i class="bi bi-arrow-clockwise"></i> Reboot
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-info w-100" onclick="getBatteryInfo()">
+                                <i class="bi bi-battery-charging"></i> Battery Info
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Scanner -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-wifi"></i> Network Scanner</h5>
+                </div>
+                <div class="card-body">
+                    <p>Scan your network for Android TV devices</p>
+                    <button class="btn btn-primary w-100 mb-2" onclick="scanNetwork()">
+                        <i class="bi bi-search"></i> Scan Network
+                    </button>
+                    <div id="scanProgress" style="display: none;" class="mt-3">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 100%"></div>
+                        </div>
+                        <p class="text-center mt-2">Scanning...</p>
+                    </div>
+                    <div id="scanResults" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Optimization -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-speedometer2"></i> Optimization</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary w-100 mb-2" onclick="disableAnimations()">
+                        <i class="bi bi-lightning"></i> Disable Animations
+                    </button>
+                    <button class="btn btn-warning w-100 mb-2" onclick="clearAppCache()">
+                        <i class="bi bi-trash"></i> Clear App Cache
+                    </button>
+                    <button class="btn btn-danger w-100" onclick="clearSystemCache()">
+                        <i class="bi bi-trash3"></i> Clear System Cache
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyboard Remote -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-keyboard"></i> Virtual Remote</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 mb-3">
+                        <div class="col-12 text-center">
+                            <button class="btn btn-primary" onclick="sendKey('KEYCODE_DPAD_UP')">
+                                <i class="bi bi-arrow-up"></i>
+                            </button>
+                        </div>
+                        <div class="col-4 text-end">
+                            <button class="btn btn-primary" onclick="sendKey('KEYCODE_DPAD_LEFT')">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                        </div>
+                        <div class="col-4 text-center">
+                            <button class="btn btn-success" onclick="sendKey('KEYCODE_DPAD_CENTER')">
+                                OK
+                            </button>
+                        </div>
+                        <div class="col-4 text-start">
+                            <button class="btn btn-primary" onclick="sendKey('KEYCODE_DPAD_RIGHT')">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button class="btn btn-primary" onclick="sendKey('KEYCODE_DPAD_DOWN')">
+                                <i class="bi bi-arrow-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <button class="btn btn-secondary w-100" onclick="sendKey('KEYCODE_BACK')">
+                                <i class="bi bi-arrow-left-circle"></i> Back
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-secondary w-100" onclick="sendKey('KEYCODE_HOME')">
+                                <i class="bi bi-house"></i> Home
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-secondary w-100" onclick="sendKey('KEYCODE_MENU')">
+                                <i class="bi bi-list"></i> Menu
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-info w-100" onclick="sendKey('KEYCODE_VOLUME_UP')">
+                                <i class="bi bi-volume-up"></i>
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-info w-100" onclick="sendKey('KEYCODE_VOLUME_DOWN')">
+                                <i class="bi bi-volume-down"></i>
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-info w-100" onclick="sendKey('KEYCODE_VOLUME_MUTE')">
+                                <i class="bi bi-volume-mute"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Voice Commands -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-mic"></i> Voice Commands</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary w-100 mb-2" onclick="triggerVoiceInput()">
+                        <i class="bi bi-mic-fill"></i> Trigger Voice Input
+                    </button>
+                    <button class="btn btn-success w-100 mb-3" onclick="triggerAssistant()">
+                        <i class="bi bi-robot"></i> Google Assistant
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label for="voiceSearchQuery" class="form-label">Voice Search</label>
+                        <input type="text" class="form-control" id="voiceSearchQuery" placeholder="Enter search query">
+                    </div>
+                    <button class="btn btn-info w-100 mb-2" onclick="voiceSearch()">
+                        <i class="bi bi-search"></i> Web Search
+                    </button>
+                    <button class="btn btn-danger w-100 mb-3" onclick="youtubeSearch()">
+                        <i class="bi bi-youtube"></i> YouTube Search
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label for="textInput" class="form-label">Send Text</label>
+                        <input type="text" class="form-control" id="textInput" placeholder="Enter text to send">
+                    </div>
+                    <button class="btn btn-secondary w-100" onclick="sendTextInput()">
+                        <i class="bi bi-keyboard"></i> Send Text
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Storage Manager -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-hdd"></i> Storage Manager</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-info w-100 mb-3" onclick="getStorageInfo()">
+                        <i class="bi bi-info-circle"></i> Storage Info
+                    </button>
+                    <div id="storageInfo" class="mb-3"></div>
+                    
+                    <button class="btn btn-warning w-100 mb-2" onclick="clearAllCache()">
+                        <i class="bi bi-trash"></i> Clear All Cache
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label for="clearDataPackage" class="form-label">Clear App Data</label>
+                        <input type="text" class="form-control" id="clearDataPackage" placeholder="Package name">
+                    </div>
+                    <button class="btn btn-danger w-100" onclick="clearAppDataByPackage()">
+                        <i class="bi bi-trash3"></i> Clear App Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Wireless ADB -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-wifi"></i> Wireless ADB</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-info w-100 mb-3" onclick="getWirelessStatus()">
+                        <i class="bi bi-info-circle"></i> Check Status
+                    </button>
+                    <div id="wirelessStatus" class="mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label for="wirelessPort" class="form-label">Port</label>
+                        <input type="number" class="form-control" id="wirelessPort" value="5555" min="1024" max="65535">
+                    </div>
+                    <button class="btn btn-success w-100 mb-2" onclick="enableWireless()">
+                        <i class="bi bi-wifi"></i> Enable Wireless
+                    </button>
+                    <button class="btn btn-danger w-100" onclick="disableWireless()">
+                        <i class="bi bi-wifi-off"></i> Disable Wireless
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Diagnostics -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-bug"></i> System Diagnostics</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary w-100 mb-2" onclick="viewLogcat()">
+                        <i class="bi bi-file-text"></i> View Logcat
+                    </button>
+                    <button class="btn btn-warning w-100 mb-2" onclick="clearLogs()">
+                        <i class="bi bi-trash"></i> Clear Logs
+                    </button>
+                    <button class="btn btn-info w-100 mb-2" onclick="listProcesses()">
+                        <i class="bi bi-list-task"></i> List Processes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Permission Manager -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-shield-lock"></i> Permission Manager</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="permPackage" class="form-label">Package Name</label>
+                        <input type="text" class="form-control" id="permPackage" placeholder="com.example.app">
+                    </div>
+                    <button class="btn btn-primary w-100 mb-3" onclick="listPermissions()">
+                        <i class="bi bi-list"></i> List Permissions
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label for="permissionName" class="form-label">Permission</label>
+                        <input type="text" class="form-control" id="permissionName" placeholder="android.permission.CAMERA">
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <button class="btn btn-success w-100" onclick="grantPermission()">
+                                <i class="bi bi-check-circle"></i> Grant
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-danger w-100" onclick="revokePermission()">
+                                <i class="bi bi-x-circle"></i> Revoke
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IME Manager -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-keyboard"></i> Input Method Manager</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-info w-100 mb-3" onclick="listIMEs()">
+                        <i class="bi bi-list"></i> List Input Methods
+                    </button>
+                    <button class="btn btn-primary w-100 mb-3" onclick="getCurrentIME()">
+                        <i class="bi bi-info-circle"></i> Current IME
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label for="imeId" class="form-label">IME ID</label>
+                        <input type="text" class="form-control" id="imeId" placeholder="com.example.ime/.Service">
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <button class="btn btn-success w-100" onclick="setIME()">
+                                <i class="bi bi-check"></i> Set
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-primary w-100" onclick="enableIME()">
+                                <i class="bi bi-toggle-on"></i> Enable
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-danger w-100" onclick="disableIME()">
+                                <i class="bi bi-toggle-off"></i> Disable
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bloatware List Modal -->
+<div class="modal fade" id="bloatwareModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bloatware List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="bloatwareList"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Permissions Modal -->
+<div class="modal fade" id="permissionsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">App Permissions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="permissionsList"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logcat Modal -->
+<div class="modal fade" id="logcatModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Device Logcat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <pre id="logcatContent" style="max-height: 500px; overflow-y: auto; background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px;"></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Processes Modal -->
+<div class="modal fade" id="processesModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Running Processes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="processesList"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- IME List Modal -->
+<div class="modal fade" id="imeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Input Methods</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="imeList"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+{% endblock %}

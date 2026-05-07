@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - TV Tools for Linux{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4"><i class="bi bi-gear"></i> Device Settings</h1>
+
+    <div class="row">
+        <!-- Display Settings -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-display"></i> Display Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="screenTimeout" class="form-label">Screen Timeout (seconds)</label>
+                        <input type="number" class="form-control" id="screenTimeout" min="0" max="3600" placeholder="300">
+                        <button class="btn btn-sm btn-primary mt-2" onclick="setScreenTimeout()">Apply</button>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="animationScale" class="form-label">Animation Scale</label>
+                        <select class="form-select" id="animationScale">
+                            <option value="0">Off (0.0x)</option>
+                            <option value="0.5">Half (0.5x)</option>
+                            <option value="1" selected>Normal (1.0x)</option>
+                            <option value="1.5">1.5x</option>
+                            <option value="2">Double (2.0x)</option>
+                        </select>
+                        <button class="btn btn-sm btn-primary mt-2" onclick="setAnimationScale()">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Settings -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-toggles"></i> System Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">GPS Location</label>
+                        <div class="btn-group w-100" role="group">
+                            <button class="btn btn-outline-success" onclick="toggleGPS(true)">
+                                <i class="bi bi-check-circle"></i> Enable
+                            </button>
+                            <button class="btn btn-outline-danger" onclick="toggleGPS(false)">
+                                <i class="bi bi-x-circle"></i> Disable
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Auto Updates</label>
+                        <div class="btn-group w-100" role="group">
+                            <button class="btn btn-outline-success" onclick="toggleAutoUpdates(true)">
+                                <i class="bi bi-check-circle"></i> Enable
+                            </button>
+                            <button class="btn btn-outline-danger" onclick="toggleAutoUpdates(false)">
+                                <i class="bi bi-x-circle"></i> Disable
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Stay Awake (While Charging)</label>
+                        <div class="btn-group w-100" role="group">
+                            <button class="btn btn-outline-success" onclick="toggleStayAwake(true)">
+                                <i class="bi bi-check-circle"></i> Enable
+                            </button>
+                            <button class="btn btn-outline-danger" onclick="toggleStayAwake(false)">
+                                <i class="bi bi-x-circle"></i> Disable
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remote Control -->
+    <div class="card">
+        <div class="card-header">
+            <h5><i class="bi bi-controller"></i> Remote Control</h5>
+        </div>
+        <div class="card-body">
+            <p>Launch scrcpy to control your Android TV from your computer.</p>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="scrcpyPreset" class="form-label">Quality Preset</label>
+                    <select class="form-select" id="scrcpyPreset">
+                        <option value="default">Default Quality</option>
+                        <option value="high_quality">High Quality</option>
+                        <option value="low_latency">Low Latency</option>
+                        <option value="high_fps">High FPS (60fps)</option>
+                        <option value="power_saving">Power Saving</option>
+                        <option value="fullscreen">Fullscreen</option>
+                        <option value="no_control">View Only</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">&nbsp;</label>
+                    <button class="btn btn-success w-100" onclick="launchScrcpy()">
+                        <i class="bi bi-play-circle"></i> Launch scrcpy
+                    </button>
+                </div>
+            </div>
+
+            <div id="scrcpyStatus" class="alert alert-info" style="display: none;">
+                <i class="bi bi-info-circle"></i> <span id="scrcpyStatusText"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

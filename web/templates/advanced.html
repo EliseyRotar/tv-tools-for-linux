@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+
+{% block title %}Advanced Features - TV Tools for Linux{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4"><i class="bi bi-gear-wide-connected"></i> Advanced Features</h1>
+
+    <div class="row">
+        <!-- Backup & Restore -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-archive"></i> Backup & Restore</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Create Backup</h6>
+                    <form id="backupForm">
+                        <div class="mb-3">
+                            <label for="backupName" class="form-label">Backup Name</label>
+                            <input type="text" class="form-control" id="backupName" placeholder="my_backup">
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="includeApks" checked>
+                            <label class="form-check-label" for="includeApks">
+                                Include APKs
+                            </label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="includeData" checked>
+                            <label class="form-check-label" for="includeData">
+                                Include App Data
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-archive"></i> Create Backup
+                        </button>
+                    </form>
+
+                    <hr>
+
+                    <h6>Available Backups</h6>
+                    <div id="backupsList" class="list-group">
+                        <div class="text-muted text-center py-3">No backups available</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Operations -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-stack"></i> Batch Operations</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Batch Install APKs</h6>
+                    <form id="batchInstallForm">
+                        <div class="mb-3">
+                            <label for="batchApks" class="form-label">Select Multiple APKs</label>
+                            <input type="file" class="form-control" id="batchApks" accept=".apk" multiple>
+                            <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple files</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-upload"></i> Install All
+                        </button>
+                    </form>
+
+                    <div id="batchInstallProgress" style="display: none;" class="mt-3">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" style="width: 0%" id="batchProgressBar"></div>
+                        </div>
+                        <p class="text-center mt-2" id="batchProgressText">Installing...</p>
+                    </div>
+
+                    <hr>
+
+                    <h6>Batch Uninstall</h6>
+                    <p class="text-muted">Select apps from the Apps page, then use batch uninstall</p>
+                    <button class="btn btn-outline-danger w-100" onclick="window.location.href='/apps'">
+                        <i class="bi bi-box-seam"></i> Go to Apps
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshot Gallery -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5><i class="bi bi-images"></i> Screenshot Gallery</h5>
+        </div>
+        <div class="card-body">
+            <div id="loadingGallery" class="text-center py-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div id="galleryContainer" style="display: none;">
+                <div class="row" id="screenshotGallery">
+                </div>
+            </div>
+
+            <div id="noScreenshots" style="display: none;" class="text-center py-5">
+                <i class="bi bi-image" style="font-size: 3rem;"></i>
+                <p class="mt-2">No screenshots yet</p>
+                <p class="text-muted">Take screenshots from the Files page</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accessibility Features -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-universal-access"></i> Accessibility</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary w-100 mb-2" onclick="toggleTalkBack(true)">
+                        <i class="bi bi-volume-up"></i> Enable TalkBack
+                    </button>
+                    <button class="btn btn-secondary w-100 mb-3" onclick="toggleTalkBack(false)">
+                        <i class="bi bi-volume-mute"></i> Disable TalkBack
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Captions</label>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <button class="btn btn-success w-100" onclick="configureCaptions(true)">
+                                    <i class="bi bi-badge-cc"></i> Enable
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-secondary w-100" onclick="configureCaptions(false)">
+                                    <i class="bi bi-badge-cc-fill"></i> Disable
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-info w-100 mb-2" onclick="toggleHighContrast(true)">
+                        <i class="bi bi-brightness-high"></i> Enable High Contrast
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label for="colorCorrectionMode" class="form-label">Color Correction</label>
+                        <select class="form-select" id="colorCorrectionMode">
+                            <option value="0">Disabled</option>
+                            <option value="11">Deuteranomaly (Red-Green)</option>
+                            <option value="12">Protanomaly (Red-Green)</option>
+                            <option value="13">Tritanomaly (Blue-Yellow)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary w-100 mb-2" onclick="setColorCorrection()">
+                        <i class="bi bi-palette"></i> Apply Color Correction
+                    </button>
+                    
+                    <button class="btn btn-warning w-100" onclick="toggleMagnification(true)">
+                        <i class="bi bi-zoom-in"></i> Enable Magnification
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ad Blocking (DNS) -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-shield-check"></i> Ad Blocking (DNS)</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-info w-100 mb-3" onclick="getDNSStatus()">
+                        <i class="bi bi-info-circle"></i> Check DNS Status
+                    </button>
+                    <div id="dnsStatus" class="mb-3"></div>
+                    
+                    <button class="btn btn-success w-100 mb-2" onclick="enableAdGuardDNS(false)">
+                        <i class="bi bi-shield"></i> AdGuard DNS
+                    </button>
+                    <button class="btn btn-success w-100 mb-2" onclick="enableAdGuardDNS(true)">
+                        <i class="bi bi-shield-fill-check"></i> AdGuard DNS Family
+                    </button>
+                    <button class="btn btn-primary w-100 mb-3" onclick="enableControlDDNS('default')">
+                        <i class="bi bi-shield-lock"></i> ControlD DNS
+                    </button>
+                    
+                    <div class="mb-3">
+                        <label for="customDNS" class="form-label">Custom DNS</label>
+                        <input type="text" class="form-control" id="customDNS" placeholder="dns.example.com">
+                    </div>
+                    <button class="btn btn-secondary w-100 mb-2" onclick="enableCustomDNS()">
+                        <i class="bi bi-gear"></i> Set Custom DNS
+                    </button>
+                    
+                    <button class="btn btn-danger w-100" onclick="disableDNS()">
+                        <i class="bi bi-x-circle"></i> Disable Private DNS
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADB Shell & Icon Generator -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-terminal"></i> ADB Shell</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="shellCommand" class="form-label">Command</label>
+                        <input type="text" class="form-control font-monospace" id="shellCommand" 
+                               placeholder="pm list packages">
+                    </div>
+                    <button class="btn btn-primary w-100 mb-3" onclick="executeShellCommand()">
+                        <i class="bi bi-play-circle"></i> Execute
+                    </button>
+                    
+                    <button class="btn btn-info w-100 mb-3" onclick="showCommonCommands()">
+                        <i class="bi bi-book"></i> Common Commands
+                    </button>
+                    
+                    <div id="shellOutput" class="mb-3" style="display: none;">
+                        <label class="form-label">Output:</label>
+                        <pre class="bg-dark text-light p-3 rounded" style="max-height: 300px; overflow-y: auto;" id="shellOutputContent"></pre>
+                    </div>
+                    
+                    <button class="btn btn-secondary w-100" onclick="showShellHistory()">
+                        <i class="bi bi-clock-history"></i> Command History
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Icon Generator -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-app-indicator"></i> Icon Generator</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Generate launcher icons for hidden apps</p>
+                    
+                    <button class="btn btn-primary w-100 mb-3" onclick="detectHiddenApps()">
+                        <i class="bi bi-search"></i> Detect Hidden Apps
+                    </button>
+                    
+                    <div id="hiddenAppsList" class="mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label for="iconPackage" class="form-label">Package Name</label>
+                        <input type="text" class="form-control" id="iconPackage" 
+                               placeholder="com.example.app">
+                    </div>
+                    <div class="mb-3">
+                        <label for="iconLabel" class="form-label">Label (Optional)</label>
+                        <input type="text" class="form-control" id="iconLabel" 
+                               placeholder="My App">
+                    </div>
+                    <button class="btn btn-success w-100" onclick="generateSingleIcon()">
+                        <i class="bi bi-plus-circle"></i> Generate Icon
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Installer & Update Checker -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-shop"></i> App Installer</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="appCategory" class="form-label">Category</label>
+                        <select class="form-select" id="appCategory" onchange="loadInstallableApps()">
+                            <option value="">All Apps</option>
+                            <option value="launcher">Launchers</option>
+                            <option value="iptv">IPTV Apps</option>
+                            <option value="store">App Stores</option>
+                            <option value="streaming">Streaming Apps</option>
+                            <option value="utility">Utilities</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary w-100 mb-3" onclick="loadInstallableApps()">
+                        <i class="bi bi-list"></i> Load Apps
+                    </button>
+                    
+                    <div id="installableAppsList" class="list-group mb-3" style="max-height: 400px; overflow-y: auto;">
+                    </div>
+                    
+                    <p class="text-muted small">
+                        <i class="bi bi-info-circle"></i> Popular apps like SmartTube, launchers, IPTV players, and more
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Checker -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-arrow-repeat"></i> Update Checker</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary w-100 mb-3" onclick="checkForUpdates()">
+                        <i class="bi bi-cloud-download"></i> Check for Updates
+                    </button>
+                    
+                    <div id="updateStatus" class="mb-3"></div>
+                    
+                    <div id="updateInfo" style="display: none;">
+                        <div class="alert alert-info">
+                            <h6>Update Available!</h6>
+                            <p class="mb-2">
+                                <strong>Current:</strong> <span id="currentVersion"></span><br>
+                                <strong>Latest:</strong> <span id="latestVersion"></span>
+                            </p>
+                            <button class="btn btn-sm btn-primary" onclick="viewChangelog()">
+                                <i class="bi bi-file-text"></i> View Changelog
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="getDownloadURL()">
+                                <i class="bi bi-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="noUpdate" style="display: none;">
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle"></i> You're using the latest version!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Common Commands Modal -->
+<div class="modal fade" id="commonCommandsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Common ADB Commands</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="commonCommandsList"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Shell History Modal -->
+<div class="modal fade" id="shellHistoryModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Command History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="shellHistoryList"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Changelog Modal -->
+<div class="modal fade" id="changelogModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Changelog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <pre id="changelogContent" style="white-space: pre-wrap;"></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Screenshot Modal -->
+<div class="modal fade" id="screenshotModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="screenshotModalTitle">Screenshot</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="screenshotModalImage" src="" class="img-fluid" alt="Screenshot">
+            </div>
+            <div class="modal-footer">
+                <a id="screenshotDownloadBtn" href="" download class="btn btn-primary">
+                    <i class="bi bi-download"></i> Download
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/advanced.js') }}"></script>
+{% endblock %}
