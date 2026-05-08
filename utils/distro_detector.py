@@ -5,24 +5,76 @@ from typing import Optional, Dict, List, Tuple
 
 
 class DistroDetector:
+    # Maps distro ID (from /etc/os-release) to package manager
     DISTRO_PACKAGE_MANAGERS = {
+        # Arch-based
         'arch': 'pacman',
         'manjaro': 'pacman',
         'endeavouros': 'pacman',
         'garuda': 'pacman',
+        'artix': 'pacman',
+        'cachyos': 'pacman',
+        'blackarch': 'pacman',
+        'parabola': 'pacman',
+        'hyperbola': 'pacman',
+        # Debian/Ubuntu-based
         'ubuntu': 'apt',
         'debian': 'apt',
         'linuxmint': 'apt',
         'pop': 'apt',
         'elementary': 'apt',
         'kali': 'apt',
+        'parrot': 'apt',
+        'mx': 'apt',
+        'mxlinux': 'apt',
+        'zorin': 'apt',
+        'raspbian': 'apt',
+        'deepin': 'apt',
+        'pureos': 'apt',
+        'tails': 'apt',
+        'devuan': 'apt',
+        'lmde': 'apt',
+        'bunsenlabs': 'apt',
+        'antix': 'apt',
+        'sparky': 'apt',
+        # Fedora/RHEL-based
         'fedora': 'dnf',
         'rhel': 'dnf',
         'centos': 'dnf',
         'almalinux': 'dnf',
         'rocky': 'dnf',
+        'ol': 'dnf',           # Oracle Linux
+        'scientific': 'dnf',
+        'nobara': 'dnf',
+        'ultramarine': 'dnf',
+        'qubes': 'dnf',
+        # openSUSE-based
         'opensuse': 'zypper',
+        'opensuse-leap': 'zypper',
+        'opensuse-tumbleweed': 'zypper',
         'suse': 'zypper',
+        'sles': 'zypper',
+        # Alpine
+        'alpine': 'apk',
+        # Void Linux
+        'void': 'xbps',
+        # Gentoo-based
+        'gentoo': 'emerge',
+        'funtoo': 'emerge',
+        'calculate': 'emerge',
+        # NixOS
+        'nixos': 'nix',
+        # Solus
+        'solus': 'eopkg',
+        # Clear Linux
+        'clear-linux-os': 'swupd',
+        # Slackware-based
+        'slackware': 'slackpkg',
+        # Mageia/OpenMandriva
+        'mageia': 'urpmi',
+        'openmandriva': 'dnf',
+        # PCLinuxOS
+        'pclinuxos': 'apt-rpm',
     }
 
     PACKAGE_MANAGER_COMMANDS = {
@@ -43,11 +95,44 @@ class DistroDetector:
             'check': ['rpm', '-q'],
         },
         'zypper': {
-            'install': ['sudo', 'zypper', 'install', '-y'],
+            'install': ['sudo', 'zypper', '--non-interactive', 'install'],
+            'check': ['rpm', '-q'],
+        },
+        'apk': {
+            'install': ['sudo', 'apk', 'add'],
+            'check': ['apk', 'info', '-e'],
+        },
+        'xbps': {
+            'install': ['sudo', 'xbps-install', '-Sy'],
+            'check': ['xbps-query', '-S'],
+        },
+        'emerge': {
+            'install': ['sudo', 'emerge', '--ask=n'],
+            'check': ['equery', 'list'],
+        },
+        'nix': {
+            'install': ['nix-env', '-iA', 'nixpkgs'],
+            'check': ['nix-env', '-q'],
+        },
+        'eopkg': {
+            'install': ['sudo', 'eopkg', 'install', '-y'],
+            'check': ['eopkg', 'info'],
+        },
+        'swupd': {
+            'install': ['sudo', 'swupd', 'bundle-add'],
+            'check': ['swupd', 'bundle-list'],
+        },
+        'slackpkg': {
+            'install': ['sudo', 'slackpkg', 'install'],
+            'check': ['ls', '/var/log/packages/'],
+        },
+        'urpmi': {
+            'install': ['sudo', 'urpmi', '--auto'],
             'check': ['rpm', '-q'],
         },
     }
 
+    # Package names per package manager
     PACKAGE_NAMES = {
         'adb': {
             'pacman': 'android-tools',
@@ -55,13 +140,29 @@ class DistroDetector:
             'dnf': 'android-tools',
             'yum': 'android-tools',
             'zypper': 'android-tools',
+            'apk': 'android-tools',
+            'xbps': 'android-tools',
+            'emerge': 'dev-util/android-tools',
+            'nix': 'nixpkgs.android-tools',
+            'eopkg': 'android-tools',
+            'swupd': 'android-platform-tools',
+            'slackpkg': 'android-tools',
+            'urpmi': 'android-tools',
         },
         'scrcpy': {
             'pacman': 'scrcpy',
             'apt': 'scrcpy',
-            'dnf': 'scrcpy',
+            'dnf': 'scrcpy',          # requires: dnf copr enable zeno/scrcpy first
             'yum': 'scrcpy',
             'zypper': 'scrcpy',
+            'apk': 'scrcpy',
+            'xbps': 'scrcpy',
+            'emerge': 'app-mobilephone/scrcpy',
+            'nix': 'nixpkgs.scrcpy',
+            'eopkg': 'scrcpy',
+            'swupd': 'scrcpy',
+            'slackpkg': 'scrcpy',
+            'urpmi': 'scrcpy',
         },
         'nmap': {
             'pacman': 'nmap',
@@ -69,7 +170,20 @@ class DistroDetector:
             'dnf': 'nmap',
             'yum': 'nmap',
             'zypper': 'nmap',
+            'apk': 'nmap',
+            'xbps': 'nmap',
+            'emerge': 'net-analyzer/nmap',
+            'nix': 'nixpkgs.nmap',
+            'eopkg': 'nmap',
+            'swupd': 'nmap',
+            'slackpkg': 'nmap',
+            'urpmi': 'nmap',
         },
+    }
+
+    # Special pre-install steps needed for some distros/packages
+    PRE_INSTALL_STEPS = {
+        ('dnf', 'scrcpy'): ['sudo', 'dnf', 'copr', 'enable', '-y', 'zeno/scrcpy'],
     }
 
     def __init__(self):
@@ -95,7 +209,6 @@ class DistroDetector:
                     if '=' in line:
                         key, value = line.split('=', 1)
                         value = value.strip('"').strip("'")
-
                         if key == 'ID':
                             distro_info['id'] = value.lower()
                         elif key == 'NAME':
@@ -112,18 +225,27 @@ class DistroDetector:
     def _get_package_manager(self) -> Optional[str]:
         distro_id = self.distro_info['id']
 
+        # Direct match
         if distro_id in self.DISTRO_PACKAGE_MANAGERS:
             return self.DISTRO_PACKAGE_MANAGERS[distro_id]
 
+        # ID_LIKE fallback (e.g. "ubuntu debian" → apt)
         id_like = self.distro_info['id_like']
         if id_like:
             for distro in id_like.split():
                 if distro in self.DISTRO_PACKAGE_MANAGERS:
                     return self.DISTRO_PACKAGE_MANAGERS[distro]
 
-        for pm in ['pacman', 'apt', 'dnf', 'yum', 'zypper']:
+        # Binary detection fallback — works for any distro using a known PM
+        for pm in ['pacman', 'apt-get', 'dnf', 'yum', 'zypper', 'apk', 'xbps-install',
+                   'emerge', 'nix-env', 'eopkg', 'swupd', 'slackpkg', 'urpmi']:
             if shutil.which(pm):
-                return pm
+                # Normalize to our internal key
+                return {
+                    'apt-get': 'apt',
+                    'xbps-install': 'xbps',
+                    'nix-env': 'nix',
+                }.get(pm, pm)
 
         return None
 
@@ -145,7 +267,6 @@ class DistroDetector:
     def get_install_command(self, package: str) -> Optional[List[str]]:
         if not self.package_manager:
             return None
-
         if self.package_manager not in self.PACKAGE_MANAGER_COMMANDS:
             return None
 
@@ -154,26 +275,35 @@ class DistroDetector:
             if self.package_manager in self.PACKAGE_NAMES[package]:
                 package_name = self.PACKAGE_NAMES[package][self.package_manager]
 
+        # nix uses attribute path syntax: nix-env -iA nixpkgs.android-tools
+        if self.package_manager == 'nix':
+            return ['nix-env', '-iA', package_name]
+
         install_cmd = self.PACKAGE_MANAGER_COMMANDS[self.package_manager]['install'].copy()
         install_cmd.append(package_name)
-
         return install_cmd
 
     def install_dependency(self, dependency: str) -> Tuple[bool, str]:
         if not self.package_manager:
-            error_msg = (
-                f"Cannot install {dependency}: No package manager detected.\n"
+            return False, (
+                f"Cannot install {dependency}: no package manager detected.\n"
                 f"Please install {dependency} manually for your distribution."
             )
-            return False, error_msg
 
         install_cmd = self.get_install_command(dependency)
         if not install_cmd:
-            error_msg = (
-                f"Cannot install {dependency}: Unknown package manager.\n"
+            return False, (
+                f"Cannot install {dependency}: unknown package manager '{self.package_manager}'.\n"
                 f"Please install {dependency} manually."
             )
-            return False, error_msg
+
+        # Run any required pre-install steps (e.g. enabling COPR for scrcpy on Fedora)
+        pre_step = self.PRE_INSTALL_STEPS.get((self.package_manager, dependency))
+        if pre_step:
+            try:
+                subprocess.run(pre_step, capture_output=True, text=True, timeout=60)
+            except Exception:
+                pass  # best-effort, continue with install
 
         try:
             result = subprocess.run(
@@ -182,51 +312,65 @@ class DistroDetector:
                 text=True,
                 timeout=300
             )
-
             if result.returncode == 0:
                 return True, f"Successfully installed {dependency}"
             else:
-                error_msg = (
+                return False, (
                     f"Failed to install {dependency}.\n"
                     f"Error: {result.stderr}\n"
-                    f"Please try installing manually: {' '.join(install_cmd)}"
+                    f"Try manually: {' '.join(install_cmd)}"
                 )
-                return False, error_msg
         except subprocess.TimeoutExpired:
-            error_msg = (
-                f"Installation of {dependency} timed out.\n"
-                f"Please try installing manually: {' '.join(install_cmd)}"
-            )
-            return False, error_msg
+            return False, f"Installation of {dependency} timed out. Try manually: {' '.join(install_cmd)}"
         except Exception as e:
-            error_msg = (
-                f"Failed to install {dependency}: {str(e)}\n"
-                f"Please try installing manually: {' '.join(install_cmd)}"
-            )
-            return False, error_msg
+            return False, f"Failed to install {dependency}: {str(e)}\nTry manually: {' '.join(install_cmd)}"
 
     def get_manual_install_instructions(self, dependency: str) -> str:
-        instructions = [
-            f"\nManual installation instructions for {dependency}:\n"
-        ]
+        lines = [f"\nManual installation instructions for {dependency}:\n"]
 
         if dependency in self.PACKAGE_NAMES:
-            instructions.append("Package names by distribution:")
+            pm_labels = {
+                'pacman': 'Arch/Manjaro/EndeavourOS',
+                'apt':    'Debian/Ubuntu/Mint/Kali/Raspbian',
+                'dnf':    'Fedora/RHEL/AlmaLinux/Rocky',
+                'yum':    'CentOS (legacy)',
+                'zypper': 'openSUSE/SLES',
+                'apk':    'Alpine Linux',
+                'xbps':   'Void Linux',
+                'emerge': 'Gentoo/Funtoo',
+                'nix':    'NixOS',
+                'eopkg':  'Solus',
+                'swupd':  'Clear Linux',
+                'slackpkg': 'Slackware',
+                'urpmi':  'Mageia',
+            }
             for pm, pkg_name in self.PACKAGE_NAMES[dependency].items():
-                if pm == 'pacman':
-                    instructions.append(f"  Arch/Manjaro: sudo pacman -S {pkg_name}")
-                elif pm == 'apt':
-                    instructions.append(f"  Debian/Ubuntu: sudo apt-get install {pkg_name}")
-                elif pm == 'dnf':
-                    instructions.append(f"  Fedora/RHEL: sudo dnf install {pkg_name}")
-                elif pm == 'yum':
-                    instructions.append(f"  CentOS (old): sudo yum install {pkg_name}")
-                elif pm == 'zypper':
-                    instructions.append(f"  openSUSE: sudo zypper install {pkg_name}")
-        else:
-            instructions.append(f"Please consult your distribution's documentation for installing {dependency}.")
+                label = pm_labels.get(pm, pm)
+                if pm == 'nix':
+                    lines.append(f"  {label:35}: nix-env -iA {pkg_name}")
+                elif pm == 'emerge':
+                    lines.append(f"  {label:35}: sudo emerge {pkg_name}")
+                elif pm == 'apk':
+                    lines.append(f"  {label:35}: sudo apk add {pkg_name}")
+                elif pm == 'xbps':
+                    lines.append(f"  {label:35}: sudo xbps-install -Sy {pkg_name}")
+                elif pm == 'eopkg':
+                    lines.append(f"  {label:35}: sudo eopkg install {pkg_name}")
+                elif pm == 'swupd':
+                    lines.append(f"  {label:35}: sudo swupd bundle-add {pkg_name}")
+                else:
+                    cmd = self.PACKAGE_MANAGER_COMMANDS.get(pm, {}).get('install', [pm, 'install'])
+                    lines.append(f"  {label:35}: {' '.join(cmd)} {pkg_name}")
 
-        return '\n'.join(instructions)
+            # Special notes
+            if dependency == 'scrcpy':
+                lines.append("\n  Note (Fedora): enable COPR first:")
+                lines.append("    sudo dnf copr enable zeno/scrcpy")
+                lines.append("  Note (all distros): snap install scrcpy  (universal fallback)")
+        else:
+            lines.append(f"Please consult your distribution's documentation for {dependency}.")
+
+        return '\n'.join(lines)
 
     def get_system_info(self) -> Dict[str, str]:
         return {
