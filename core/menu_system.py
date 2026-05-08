@@ -345,12 +345,13 @@ class MenuSystem:
             options = [
                 '📸 Take Screenshot',
                 '🎥 Record Screen',
+                '🖥️  Live Screen (scrcpy)',
                 '🔙 Back to Main Menu'
             ]
 
             self.ui.display_menu_with_breadcrumb(' > '.join(self.breadcrumb), options, 'Screenshot & Recording Options')
 
-            choice = self.ui.get_input('Enter your choice (1-2, 0)', default='0')
+            choice = self.ui.get_input('Enter your choice (1-3, 0)', default='0')
 
             if choice == '1':
                 if 'screenshot_take' in self.handlers:
@@ -358,6 +359,9 @@ class MenuSystem:
             elif choice == '2':
                 if 'recording_start' in self.handlers:
                     self.handlers['recording_start']()
+            elif choice == '3':
+                if 'remote_scrcpy' in self.handlers:
+                    self.handlers['remote_scrcpy']()
             elif choice == '0' or choice == '':
                 return
             else:

@@ -721,38 +721,41 @@ class MenuHandlers:
 
     def handle_remote_scrcpy(self):
         self.ui.clear_screen()
-        self.ui.print_info('Launching scrcpy...')
+        self.ui.print_info('Live Screen via scrcpy')
+        print()
         is_installed, version = self.remote_control.check_scrcpy_installed()
         if not is_installed:
-            self.ui.print_warning('scrcpy is not installed')
-            instructions = self.remote_control.get_installation_instructions()
-            self.ui.print_info('Installation instructions:')
-            for distro, cmd in instructions.items():
-                print(f'  {distro}: {cmd}')
+            self.ui.print_warning('scrcpy is not installed. Install it first:')
+            print('  Arch:          sudo pacman -S scrcpy')
+            print('  Ubuntu/Debian: sudo apt install scrcpy')
+            print('  Fedora:        sudo dnf install scrcpy')
             self.ui.wait_for_key()
             return
-        self.ui.print_info(f'scrcpy version: {version}')
-        presets = self.remote_control.list_presets()
+
+        self.ui.print_success(f'scrcpy {version} found')
         print()
-        print('Available presets:')
-        for i, preset in enumerate(presets, 1):
-            print(f"{i}. {preset['name']}: {preset['description']}")
-        print(f"{len(presets) + 1}. Custom options")
+        print('Select preset:')
+        preset_keys = list(self.remote_control.SCRCPY_PRESETS.keys())
+        for i, key in enumerate(preset_keys, 1):
+            info = self.remote_control.SCRCPY_PRESETS[key]
+            print(f'  {i}. {info["name"]:20} - {info["description"]}')
+        print()
+
         choice = self.ui.get_input('Enter preset number', default='1')
         try:
             idx = int(choice) - 1
-            if 0 <= idx < len(presets):
-                preset_name = presets[idx]['name']
-                success, message = self.remote_control.launch_scrcpy(preset=preset_name)
+            if 0 <= idx < len(preset_keys):
+                preset_key = preset_keys[idx]
             else:
-                options = self.ui.get_input('Enter custom scrcpy options')
-                success, message = self.remote_control.launch_scrcpy(custom_options=options.split() if options else None)
-            if success:
-                self.ui.print_success(message)
-            else:
-                self.ui.print_error(message)
+                preset_key = 'default'
         except ValueError:
-            self.ui.print_error('Invalid choice')
+            preset_key = 'default'
+
+        success, message = self.remote_control.launch_scrcpy(preset=preset_key)
+        if success:
+            self.ui.print_success(message)
+        else:
+            self.ui.print_error(message)
         self.ui.wait_for_key()
 
     def handle_remote_keyboard(self):
