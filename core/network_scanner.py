@@ -100,23 +100,44 @@ class NetworkScanner:
             sock.close()
 
             if result == 0:
-                hostname = self._get_hostname(ip)
+                hostname = self._get_device_name(ip)
                 return {
                     'ip': ip,
                     'port': str(self.ADB_PORT),
-                    'hostname': hostname or 'Unknown'
+                    'hostname': hostname
                 }
         except Exception:
             pass
 
         return None
 
-    def _get_hostname(self, ip: str) -> Optional[str]:
+    def _get_device_name(self, ip: str) -> str:
+        # Try ADB getprop for real device name
         try:
-            hostname = socket.gethostbyaddr(ip)[0]
-            return hostname
+            address = f"{ip}:{self.ADB_PORT}"
+            connect_result = subprocess.run(
+                [self.adb.adb_path, 'connect', address],
+                capture_output=True, text=True, timeout=3
+            )
+            if 'connected' in connect_result.stdout.lower():
+                for prop in ['ro.product.model', 'ro.product.name']:
+                    prop_result = subprocess.run(
+                        [self.adb.adb_path, '-s', address, 'shell', 'getprop', prop],
+                        capture_output=True, text=True, timeout=3
+                    )
+                    value = prop_result.stdout.strip()
+                    if value:
+                        return value
         except Exception:
-            return None
+            pass
+
+        # Fallback to reverse DNS
+        try:
+            return socket.gethostbyaddr(ip)[0]
+        except Exception:
+            pass
+
+        return ip  # return IP itself rather than 'Unknown'
 
     def _display_devices(self, devices: List[Dict[str, str]]):
         print(f"{Colors.HEADER}╔══════════════════════════════════════════════════════════╗{Colors.ENDC}")
@@ -197,7 +218,7 @@ class NetworkScanner:
                     current_ip = parts[-1].strip('()')
 
             elif current_ip and f'{self.ADB_PORT}/tcp' in line and 'open' in line:
-                hostname = self._get_hostname(current_ip)
+                hostname = self._get_device_name(current_ip)
                 devices.append({
                     'ip': current_ip,
                     'port': str(self.ADB_PORT),
