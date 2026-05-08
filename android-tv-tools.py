@@ -370,14 +370,31 @@ class AndroidTVTools:
         self.ui.wait_for_key()
 
     def main_menu(self):
-        if not self.menu_system:
-            self.menu_system = MenuSystem(self.ui, self.adb)
-            register_all_handlers(self.menu_system, self.ui, self.adb)
+        while True:
+            if not self.menu_system:
+                self.menu_system = MenuSystem(self.ui, self.adb)
+                register_all_handlers(self.menu_system, self.ui, self.adb)
 
-        while self.menu_system.running:
-            self.ui.clear_screen()
-            self.display_header()
-            self.menu_system.show_main_menu()
+            self.menu_system.running = True
+            self.menu_system.disconnected = False
+
+            while self.menu_system.running:
+                self.ui.clear_screen()
+                self.display_header()
+                self.menu_system.show_main_menu()
+
+            # If disconnect was triggered, go back to connect screen
+            if self.menu_system.disconnected:
+                self.connected_device_info = None
+                self.menu_system = None
+                self.connect_to_device()
+                if not self.adb.is_connected():
+                    break  # user cancelled connect, exit
+                # rebuild menu for new device
+                self.menu_system = MenuSystem(self.ui, self.adb)
+                register_all_handlers(self.menu_system, self.ui, self.adb)
+            else:
+                break  # normal exit
 
     def shutdown(self):
         self.ui.clear_screen()

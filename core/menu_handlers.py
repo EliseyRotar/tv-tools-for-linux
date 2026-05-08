@@ -1036,6 +1036,8 @@ class MenuHandlers:
             success, message = self.adb.disconnect()
             if success:
                 self.ui.print_success('Disconnected from device')
+                self.menu_system.running = False
+                self.menu_system.disconnected = True
             else:
                 self.ui.print_error(f'Disconnect failed: {message}')
             self.ui.wait_for_key()

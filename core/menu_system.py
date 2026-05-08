@@ -10,6 +10,7 @@ class MenuSystem:
         self.adb = adb_manager
         self.breadcrumb: List[str] = []
         self.running = True
+        self.disconnected = False
         self.handlers: Dict[str, Callable] = {}
 
     def register_handler(self, menu_id: str, handler: Callable):
