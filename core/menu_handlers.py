@@ -400,10 +400,10 @@ class MenuHandlers:
     def handle_settings_adb_network(self):
         self.ui.clear_screen()
         self.ui.print_info('ADB over Network Settings')
-        state = self._get_current_state('adb_network', '1')
-        self.ui.print_info(f'Current state: {state}')
+        self.ui.print_info('Note: Fire OS / Android TV blocks changing this via settings.')
+        self.ui.print_info('Using "adb tcpip 5555" to enable, "adb usb" to disable.')
         print()
-        if self.ui.confirm('Enable ADB over network?', default=True):
+        if self.ui.confirm('Enable ADB over network (tcpip mode)?', default=True):
             success, message = self.settings_manager.enable_adb_network()
         else:
             success, message = self.settings_manager.disable_adb_network()

@@ -345,38 +345,19 @@ class SettingsManager:
             return False, message
 
     def enable_adb_network(self) -> Tuple[bool, str]:
-        success, current_value, error = self.get_setting('adb_network')
-
-        if success:
-            is_enabled = current_value == '1'
-            status = 'Enabled' if is_enabled else 'Disabled'
-            print(f'\n{Colors.OKCYAN}{Emoji.INFO} Current ADB over Network: {status}{Colors.ENDC}')
-
-        enable_value = self.settings_map['adb_network']['enable_value']
-        success, message = self.set_setting('adb_network', enable_value)
-
-        if success:
-            print(f'{Colors.OKGREEN}{Emoji.CHECK} New ADB over Network: Enabled{Colors.ENDC}\n')
-            return True, 'ADB over Network enabled'
-        else:
-            return False, message
+        # `settings put global adb_wifi_enabled 1` is blocked on Fire OS and many Android TV builds.
+        # The correct method is `adb tcpip 5555` which restarts ADB in TCP mode.
+        result = self.adb.execute_command(['tcpip', '5555'])
+        if result.success or 'restarting' in result.output.lower():
+            return True, 'ADB over Network enabled (port 5555). Reconnect if connection drops.'
+        return False, f'Failed to enable ADB over Network: {result.error or result.output}'
 
     def disable_adb_network(self) -> Tuple[bool, str]:
-        success, current_value, error = self.get_setting('adb_network')
-
-        if success:
-            is_enabled = current_value == '1'
-            status = 'Enabled' if is_enabled else 'Disabled'
-            print(f'\n{Colors.OKCYAN}{Emoji.INFO} Current ADB over Network: {status}{Colors.ENDC}')
-
-        disable_value = self.settings_map['adb_network']['disable_value']
-        success, message = self.set_setting('adb_network', disable_value)
-
-        if success:
-            print(f'{Colors.OKGREEN}{Emoji.CHECK} New ADB over Network: Disabled{Colors.ENDC}\n')
-            return True, 'ADB over Network disabled'
-        else:
-            return False, message
+        # Switch back to USB mode
+        result = self.adb.execute_command(['usb'])
+        if result.success or 'restarting' in result.output.lower():
+            return True, 'ADB switched back to USB mode.'
+        return False, f'Failed to disable ADB over Network: {result.error or result.output}'
 
     def enable_stay_awake(self) -> Tuple[bool, str]:
         success, current_value, error = self.get_setting('stay_awake')

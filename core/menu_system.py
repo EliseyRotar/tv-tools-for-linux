@@ -226,6 +226,9 @@ class MenuSystem:
             upd    = _get('global', 'ota_disable_automatic_update', '0')
             usb    = _get('global', 'adb_enabled', '1')
             adbnet = _get('global', 'adb_wifi_enabled', '1')
+            # adb_wifi_enabled is read-only on Fire OS / many Android TV builds — show note
+            if adbnet == ' [❌]':
+                adbnet = ' [use tcpip]'
             awake  = _get('global', 'stay_on_while_plugged_in', '7')
             unk    = _get('secure', 'install_non_market_apps', '1')
 
