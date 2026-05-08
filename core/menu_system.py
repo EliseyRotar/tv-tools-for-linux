@@ -207,13 +207,6 @@ class MenuSystem:
             self.breadcrumb = ['Main Menu', 'Custom Settings']
 
             # Fetch current states for display
-            def _state(key, enabled_val='1'):
-                try:
-                    result = self.adb.shell_command(f'settings get {{"gps_location":"secure location_providers_allowed","auto_updates":"global ota_disable_automatic_update","usb_debugging":"global adb_enabled","adb_network":"global adb_wifi_enabled","stay_awake":"global stay_on_while_plugged_in","unknown_sources":"secure install_non_market_apps"}.get(key, "")}')
-                except Exception:
-                    return ''
-                return ''
-
             def _get(namespace, key, enabled_val='1'):
                 try:
                     r = self.adb.shell_command(f'settings get {namespace} {key}')
