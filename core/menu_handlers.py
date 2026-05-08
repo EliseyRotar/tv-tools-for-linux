@@ -1036,8 +1036,8 @@ class MenuHandlers:
             success, message = self.adb.disconnect()
             if success:
                 self.ui.print_success('Disconnected from device')
-                self.menu_system.running = False
-                self.menu_system.disconnected = True
+                # flag is set by the caller via the closure in register_all_handlers
+                self._on_disconnect()
             else:
                 self.ui.print_error(f'Disconnect failed: {message}')
             self.ui.wait_for_key()
@@ -1045,6 +1045,12 @@ class MenuHandlers:
 
 def register_all_handlers(menu_system: 'MenuSystem', ui: 'UIManager', adb: 'ADBManager'):
     handlers = MenuHandlers(ui, adb)
+
+    def on_disconnect():
+        menu_system.running = False
+        menu_system.disconnected = True
+
+    handlers._on_disconnect = on_disconnect
 
     menu_system.register_handler('file_transfer', menu_system.show_file_transfer_menu)
     menu_system.register_handler('app_management', menu_system.show_app_management_menu)
