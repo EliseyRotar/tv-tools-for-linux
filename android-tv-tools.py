@@ -90,6 +90,48 @@ class AndroidTVTools:
             self.logger.warning('User declined ADB installation')
             return False
 
+    def _detect_already_connected_device(self):
+        """Check if ADB already has a connected device and populate device info."""
+        if not self.adb.check_adb_installed():
+            return
+
+        try:
+            result = subprocess.run(
+                [self.adb.adb_path, 'devices', '-l'],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            if result.returncode != 0:
+                return
+
+            lines = result.stdout.strip().splitlines()
+            for line in lines[1:]:  # skip "List of devices attached" header
+                line = line.strip()
+                if not line or 'offline' in line or 'unauthorized' in line:
+                    continue
+                if '\tdevice' in line:
+                    # extract address (IP:port or serial)
+                    address = line.split()[0]
+                    self.adb.connected_device = address
+
+                    manufacturer = self.adb.get_device_property('ro.product.manufacturer') or 'Unknown'
+                    model = self.adb.get_device_property('ro.product.model') or 'Unknown'
+                    android_version = self.adb.get_device_property('ro.build.version.release') or 'Unknown'
+
+                    self.connected_device_info = f'{address} ({manufacturer} {model})'
+                    self.logger.info(f'Already connected device detected: {self.connected_device_info}')
+
+                    self.ui.print_success(f'Already connected: {manufacturer} {model}')
+                    self.ui.print_info(f'  Address : {address}')
+                    self.ui.print_info(f'  Android : {android_version}')
+
+                    self.menu_system = MenuSystem(self.ui, self.adb)
+                    register_all_handlers(self.menu_system, self.ui, self.adb)
+                    return
+        except Exception as e:
+            self.logger.error(f'Device detection error: {e}')
+
     def startup_checks(self) -> bool:
         self.ui.clear_screen()
         self.display_header()
@@ -117,6 +159,11 @@ class AndroidTVTools:
         self.ui.print_info(f"Distribution: {distro_info['distro_name']}")
         self.ui.print_info(f"Package Manager: {distro_info['package_manager']}")
         self.logger.info(f"System info: {distro_info}")
+
+        print()
+
+        # Check for already-connected devices before asking user to connect
+        self._detect_already_connected_device()
 
         print()
         self.ui.wait_for_key()
@@ -358,8 +405,6 @@ class AndroidTVTools:
                 sys.exit(0)
 
             self.main_menu()
-
-        except KeyboardInterrupt:
             print()
             self.ui.print_warning('Interrupted by user')
             self.shutdown()
