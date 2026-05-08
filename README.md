@@ -172,9 +172,32 @@ pip install flask-cors
 
 ## 📋 System Requirements
 
-- Linux (Arch, Ubuntu, Debian, Fedora, or compatible)
+- Any Linux distribution (see full list below)
 - Python 3.8+
-- ADB (Android Debug Bridge)
+- ADB (Android Debug Bridge) — auto-installed on supported distros
+
+---
+
+## 🐧 Supported Linux Distributions
+
+ADB and scrcpy are auto-installed by the tool. All major distro families are supported:
+
+| Distro Family       | Distros                                                                                              | Package Manager |
+| ------------------- | ---------------------------------------------------------------------------------------------------- | --------------- |
+| Arch-based          | Arch, Manjaro, EndeavourOS, Garuda, CachyOS, Artix, Parabola                                         | pacman          |
+| Debian/Ubuntu-based | Ubuntu, Debian, Mint, Pop!\_OS, Kali, Parrot, Zorin, Raspbian, Elementary, MX, Deepin, Tails, Devuan | apt             |
+| Fedora/RHEL-based   | Fedora, RHEL, CentOS, AlmaLinux, Rocky, Oracle Linux, Nobara, Ultramarine                            | dnf             |
+| openSUSE-based      | openSUSE Leap, openSUSE Tumbleweed, SLES                                                             | zypper          |
+| Alpine Linux        | Alpine                                                                                               | apk             |
+| Void Linux          | Void                                                                                                 | xbps-install    |
+| Gentoo-based        | Gentoo, Funtoo, Calculate                                                                            | emerge          |
+| NixOS               | NixOS                                                                                                | nix-env         |
+| Solus               | Solus                                                                                                | eopkg           |
+| Clear Linux         | Clear Linux OS                                                                                       | swupd           |
+| Slackware           | Slackware                                                                                            | slackpkg        |
+| Mageia              | Mageia                                                                                               | urpmi           |
+
+Any distro not in this list will still work — the tool auto-detects the package manager via `ID_LIKE` in `/etc/os-release` or by scanning for known package manager binaries. If auto-install fails, manual install instructions are shown for every distro.
 
 ---
 
@@ -191,6 +214,24 @@ sudo apt install adb
 
 # Fedora
 sudo dnf install android-tools
+
+# Alpine Linux
+sudo apk add android-tools
+
+# Void Linux
+sudo xbps-install -Sy android-tools
+
+# Gentoo
+sudo emerge dev-util/android-tools
+
+# NixOS
+nix-env -iA nixpkgs.android-tools
+
+# Solus
+sudo eopkg install android-tools
+
+# openSUSE
+sudo zypper install android-tools
 ```
 
 ### 2. Clone Repository
