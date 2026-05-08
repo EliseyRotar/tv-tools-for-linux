@@ -279,9 +279,21 @@ class MenuHandlers:
             self.ui.print_error('Invalid choice')
         self.ui.wait_for_key()
 
+    def _get_current_state(self, setting_key: str, enabled_value: str = '1') -> str:
+        """Returns '✅ Enabled' or '❌ Disabled' for a given settings key."""
+        try:
+            success, value, _ = self.settings_manager.get_setting(setting_key)
+            if not success or value is None:
+                return '❓ Unknown'
+            return '✅ Enabled' if value == enabled_value else '❌ Disabled'
+        except Exception:
+            return '❓ Unknown'
+
     def handle_settings_gps(self):
         self.ui.clear_screen()
         self.ui.print_info('GPS Location Settings')
+        state = self._get_current_state('gps_location', 'gps,network')
+        self.ui.print_info(f'Current state: {state}')
         print()
         if self.ui.confirm('Enable GPS location?', default=True):
             success, message = self.settings_manager.enable_gps_location()
@@ -296,6 +308,17 @@ class MenuHandlers:
     def handle_settings_timeout(self):
         self.ui.clear_screen()
         self.ui.print_info('Screen Timeout Settings')
+        success, current_val, _ = self.settings_manager.get_setting('screen_timeout')
+        if success and current_val:
+            ms = int(current_val)
+            if ms == -1:
+                label = 'Never'
+            elif ms < 60000:
+                label = f'{ms // 1000} seconds'
+            else:
+                label = f'{ms // 60000} minute(s)'
+            self.ui.print_info(f'Current timeout: {label} ({current_val} ms)')
+        print()
         print('Common values:')
         print('  15000 = 15 seconds')
         print('  30000 = 30 seconds')
@@ -319,6 +342,9 @@ class MenuHandlers:
     def handle_settings_updates(self):
         self.ui.clear_screen()
         self.ui.print_info('Automatic Updates Settings')
+        # ota_disable_automatic_update: 0 = updates enabled, 1 = disabled
+        state = self._get_current_state('auto_updates', '0')
+        self.ui.print_info(f'Current state: {state}')
         print()
         if self.ui.confirm('Enable automatic updates?', default=False):
             success, message = self.settings_manager.enable_auto_updates()
@@ -333,6 +359,10 @@ class MenuHandlers:
     def handle_settings_animation(self):
         self.ui.clear_screen()
         self.ui.print_info('Animation Scale Settings')
+        success, val, _ = self.settings_manager.get_setting('animation_scale_window')
+        if success and val:
+            self.ui.print_info(f'Current scale: {val}')
+        print()
         print('Scale values:')
         print('  0.0 = Off')
         print('  0.5 = Half speed')
@@ -354,6 +384,8 @@ class MenuHandlers:
     def handle_settings_usb_debug(self):
         self.ui.clear_screen()
         self.ui.print_info('USB Debugging Settings')
+        state = self._get_current_state('usb_debugging', '1')
+        self.ui.print_info(f'Current state: {state}')
         print()
         if self.ui.confirm('Enable USB debugging?', default=True):
             success, message = self.settings_manager.enable_usb_debugging()
@@ -368,6 +400,8 @@ class MenuHandlers:
     def handle_settings_adb_network(self):
         self.ui.clear_screen()
         self.ui.print_info('ADB over Network Settings')
+        state = self._get_current_state('adb_network', '1')
+        self.ui.print_info(f'Current state: {state}')
         print()
         if self.ui.confirm('Enable ADB over network?', default=True):
             success, message = self.settings_manager.enable_adb_network()
@@ -382,6 +416,8 @@ class MenuHandlers:
     def handle_settings_stay_awake(self):
         self.ui.clear_screen()
         self.ui.print_info('Stay Awake Settings')
+        state = self._get_current_state('stay_awake', '7')
+        self.ui.print_info(f'Current state: {state}')
         print()
         if self.ui.confirm('Keep screen awake while charging?', default=True):
             success, message = self.settings_manager.enable_stay_awake()
@@ -396,6 +432,8 @@ class MenuHandlers:
     def handle_settings_unknown_sources(self):
         self.ui.clear_screen()
         self.ui.print_info('Unknown Sources Settings')
+        state = self._get_current_state('unknown_sources', '1')
+        self.ui.print_info(f'Current state: {state}')
         print()
         if self.ui.confirm('Allow installation from unknown sources?', default=True):
             success, message = self.settings_manager.enable_unknown_sources()

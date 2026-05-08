@@ -206,15 +206,67 @@ class MenuSystem:
         while self.running:
             self.breadcrumb = ['Main Menu', 'Custom Settings']
 
+            # Fetch current states for display
+            def _state(key, enabled_val='1'):
+                try:
+                    result = self.adb.shell_command(f'settings get {{"gps_location":"secure location_providers_allowed","auto_updates":"global ota_disable_automatic_update","usb_debugging":"global adb_enabled","adb_network":"global adb_wifi_enabled","stay_awake":"global stay_on_while_plugged_in","unknown_sources":"secure install_non_market_apps"}.get(key, "")}')
+                except Exception:
+                    return ''
+                return ''
+
+            def _get(namespace, key, enabled_val='1'):
+                try:
+                    r = self.adb.shell_command(f'settings get {namespace} {key}')
+                    if r.success:
+                        v = r.output.strip()
+                        if v == enabled_val:
+                            return ' [✅]'
+                        elif v in ('null', ''):
+                            return ' [❓]'
+                        else:
+                            return ' [❌]'
+                except Exception:
+                    pass
+                return ''
+
+            gps    = _get('secure', 'location_providers_allowed', 'gps,network')
+            upd    = _get('global', 'ota_disable_automatic_update', '0')
+            usb    = _get('global', 'adb_enabled', '1')
+            adbnet = _get('global', 'adb_wifi_enabled', '1')
+            awake  = _get('global', 'stay_on_while_plugged_in', '7')
+            unk    = _get('secure', 'install_non_market_apps', '1')
+
+            # screen timeout current value
+            try:
+                r = self.adb.shell_command('settings get system screen_off_timeout')
+                ms = int(r.output.strip()) if r.success and r.output.strip().lstrip('-').isdigit() else None
+                if ms == -1:
+                    tout = ' [Never]'
+                elif ms and ms < 60000:
+                    tout = f' [{ms // 1000}s]'
+                elif ms:
+                    tout = f' [{ms // 60000}m]'
+                else:
+                    tout = ''
+            except Exception:
+                tout = ''
+
+            # animation scale
+            try:
+                r = self.adb.shell_command('settings get global window_animation_scale')
+                anim = f' [{r.output.strip()}x]' if r.success and r.output.strip() not in ('null', '') else ''
+            except Exception:
+                anim = ''
+
             options = [
-                '📍 GPS Location',
-                '⏰ Screen Timeout',
-                '🔄 Automatic Updates',
-                '🎬 Animation Scale',
-                '🔌 USB Debugging',
-                '📡 ADB over Network',
-                '⚡ Stay Awake',
-                '🔓 Unknown Sources',
+                f'📍 GPS Location{gps}',
+                f'⏰ Screen Timeout{tout}',
+                f'🔄 Automatic Updates{upd}',
+                f'🎬 Animation Scale{anim}',
+                f'🔌 USB Debugging{usb}',
+                f'📡 ADB over Network{adbnet}',
+                f'⚡ Stay Awake{awake}',
+                f'🔓 Unknown Sources{unk}',
                 '🔙 Back to Main Menu'
             ]
 
@@ -256,9 +308,21 @@ class MenuSystem:
         while self.running:
             self.breadcrumb = ['Main Menu', 'Display Settings']
 
+            try:
+                r = self.adb.shell_command('wm density')
+                dpi = f' [{r.output.strip()}]' if r.success and r.output.strip() else ''
+            except Exception:
+                dpi = ''
+
+            try:
+                r = self.adb.shell_command('settings get system font_scale')
+                font = f' [{r.output.strip()}x]' if r.success and r.output.strip() not in ('null', '') else ''
+            except Exception:
+                font = ''
+
             options = [
-                '📏 Screen Density',
-                '🔤 Font Size',
+                f'📏 Screen Density{dpi}',
+                f'🔤 Font Size{font}',
                 '🔙 Back to Main Menu'
             ]
 
