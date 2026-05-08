@@ -863,45 +863,10 @@ class MenuHandlers:
         from core.device_info import DeviceInfo
         self.ui.clear_screen()
         device_info = DeviceInfo(self.adb)
-        info = device_info.get_all_device_info()
+        success, info = device_info.get_device_info()
 
-        self.ui.print_info('Device Information')
-        print()
-
-        if info.get('basic'):
-            basic = info['basic']
-            self.ui.print_info(f"Manufacturer: {basic.get('manufacturer', 'Unknown')}")
-            self.ui.print_info(f"Model: {basic.get('model', 'Unknown')}")
-            self.ui.print_info(f"Android Version: {basic.get('android_version', 'Unknown')}")
-            self.ui.print_info(f"SDK Level: {basic.get('sdk_level', 'Unknown')}")
-            print()
-
-        if info.get('display'):
-            display = info['display']
-            self.ui.print_info(f"Display: {display.get('resolution', 'Unknown')}")
-            self.ui.print_info(f"Density: {display.get('density', 'Unknown')} DPI")
-            print()
-
-        if info.get('storage'):
-            storage = info['storage']
-            self.ui.print_info(f"Storage: {storage.get('total', 'Unknown')} total, {storage.get('available', 'Unknown')} available")
-            print()
-
-        if info.get('memory'):
-            memory = info['memory']
-            self.ui.print_info(f"RAM: {memory.get('total', 'Unknown')} total, {memory.get('available', 'Unknown')} available")
-            print()
-
-        if info.get('network'):
-            network = info['network']
-            self.ui.print_info(f"IP Address: {network.get('ip_address', 'Unknown')}")
-            self.ui.print_info(f"MAC Address: {network.get('mac_address', 'Unknown')}")
-            print()
-
-        if info.get('battery'):
-            battery = info['battery']
-            self.ui.print_info(f"Battery: {battery.get('level', 'Unknown')}% ({battery.get('status', 'Unknown')})")
-            print()
+        if not success:
+            self.ui.print_error('Failed to retrieve device information')
 
         self.ui.wait_for_key()
 
