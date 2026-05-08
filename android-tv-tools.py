@@ -107,12 +107,11 @@ class AndroidTVTools:
 
             lines = result.stdout.strip().splitlines()
             for line in lines[1:]:  # skip "List of devices attached" header
-                line = line.strip()
-                if not line or 'offline' in line or 'unauthorized' in line:
+                if not line.strip() or 'offline' in line or 'unauthorized' in line:
                     continue
-                if '\tdevice' in line:
-                    # extract address (IP:port or serial)
-                    address = line.split()[0]
+                parts = line.split()
+                if len(parts) >= 2 and parts[1] == 'device':
+                    address = parts[0]
                     self.adb.connected_device = address
 
                     manufacturer = self.adb.get_device_property('ro.product.manufacturer') or 'Unknown'
