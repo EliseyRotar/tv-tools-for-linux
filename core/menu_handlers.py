@@ -1031,6 +1031,16 @@ class MenuHandlers:
         self.ui.wait_for_key()
 
 
+    def handle_disconnect_device(self):
+        if self.ui.confirm('Disconnect from device?', default=True):
+            success, message = self.adb.disconnect()
+            if success:
+                self.ui.print_success('Disconnected from device')
+            else:
+                self.ui.print_error(f'Disconnect failed: {message}')
+            self.ui.wait_for_key()
+
+
 def register_all_handlers(menu_system: 'MenuSystem', ui: 'UIManager', adb: 'ADBManager'):
     handlers = MenuHandlers(ui, adb)
 
@@ -1110,3 +1120,4 @@ def register_all_handlers(menu_system: 'MenuSystem', ui: 'UIManager', adb: 'ADBM
 
     menu_system.register_handler('device_info', handlers.handle_device_info)
     menu_system.register_handler('system_monitor', handlers.handle_system_monitor)
+    menu_system.register_handler('disconnect_device', handlers.handle_disconnect_device)

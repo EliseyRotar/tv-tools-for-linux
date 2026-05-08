@@ -32,12 +32,13 @@ class MenuSystem:
             '🛡️  Ad Blocking',
             '📊 Device Info',
             '📈 System Monitor (btop)',
+            '🔌 Disconnect Device',
             '🚪 Exit'
         ]
 
         self.ui.display_menu_with_breadcrumb(' > '.join(self.breadcrumb), options)
 
-        choice = self.ui.get_input('Enter your choice (1-14, 0 to exit)', default='')
+        choice = self.ui.get_input('Enter your choice (1-15, 0 to exit)', default='')
 
         if not choice:
             return
@@ -56,7 +57,8 @@ class MenuSystem:
             '11': 'ad_blocking',
             '12': 'device_info',
             '13': 'system_monitor',
-            '14': 'exit',
+            '14': 'disconnect_device',
+            '15': 'exit',
             '0': 'exit'
         }
 
