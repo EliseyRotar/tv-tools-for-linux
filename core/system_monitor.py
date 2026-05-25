@@ -29,7 +29,7 @@ class SystemMonitor:
                             idle = nums[3] + (nums[4] if len(nums) > 4 else 0)
                             total = sum(nums)
                             return idle, total
-                        except:
+                        except (ValueError, IndexError):
                             pass
             return None, None
 
@@ -169,7 +169,7 @@ class SystemMonitor:
                             'mem': parts[3] if '%' in parts[3] else parts[4],
                             'name': parts[-1]
                         })
-                    except:
+                    except (IndexError, KeyError):
                         pass
 
         return processes[:limit]
@@ -200,13 +200,13 @@ class SystemMonitor:
                 temp = line.split(':')[1].strip()
                 try:
                     battery_info['temperature'] = f"{int(temp) / 10:.1f}°C"
-                except:
+                except (ValueError, TypeError):
                     battery_info['temperature'] = temp
             elif 'voltage:' in line:
                 voltage = line.split(':')[1].strip()
                 try:
                     battery_info['voltage'] = f"{int(voltage) / 1000:.2f}V"
-                except:
+                except (ValueError, TypeError):
                     battery_info['voltage'] = voltage
 
         return battery_info
@@ -226,7 +226,7 @@ class SystemMonitor:
                     if temp_value > 1000:
                         temp_value = temp_value / 1000
                     temps[f'zone{i}'] = f"{temp_value:.1f}°C"
-                except:
+                except (ValueError, TypeError):
                     pass
 
         return temps
@@ -240,7 +240,7 @@ class SystemMonitor:
                 return f"{kb_val / 1024:.1f} MB"
             else:
                 return f"{kb_val / 1024 / 1024:.2f} GB"
-        except:
+        except (ValueError, TypeError):
             return kb
 
     def create_progress_bar(self, percent: float, width: int = 30) -> str:
@@ -299,7 +299,7 @@ class SystemMonitor:
                                 try:
                                     use_val = float(use_percent)
                                     print(f"│ {mount:15} {storage['used']:>8} / {storage['size']:>8} ({storage['use_percent']})")
-                                except:
+                                except (ValueError, TypeError):
                                     print(f"│ {mount:15} {storage['used']:>8} / {storage['size']:>8}")
                         except Exception as e:
                             continue
@@ -319,7 +319,7 @@ class SystemMonitor:
                     try:
                         level_val = float(level)
                         print(f"│ {self.create_progress_bar(level_val)}")
-                    except:
+                    except (ValueError, TypeError):
                         pass
                     
                     print("└───────────────────────────────────────────────────────────────────────────┘")

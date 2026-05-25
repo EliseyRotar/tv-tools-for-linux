@@ -288,8 +288,9 @@ class ADBManager:
         return 1 <= port <= 65535
 
     def _sanitize_shell_input(self, input_str: str) -> str:
-        dangerous_chars = [';', '&', '|', '`', '$', '(', ')', '<', '>', '\n', '\r']
-        sanitized = input_str
-        for char in dangerous_chars:
-            sanitized = sanitized.replace(char, '')
-        return sanitized
+        # Commands are passed to subprocess with shell=False, so there is no
+        # host-side shell injection. Pipes/redirects ($ | ( ) etc.) are required
+        # by legitimate device commands like `dumpsys wifi | grep`, so they must
+        # be preserved. Only strip control characters that cannot appear in a
+        # single-line `adb shell` argument and could be used to splice commands.
+        return input_str.replace('\x00', '').replace('\r', '').replace('\n', '')

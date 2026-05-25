@@ -72,8 +72,8 @@ class InstallHelper:
             packages = self.package_manager.list_packages(filter_type='all')
 
             for pkg in packages:
-                if pkg.get('package') == package_name:
-                    version = pkg.get('version_name', 'unknown')
+                if pkg.package_name == package_name:
+                    version = pkg.version_name or 'unknown'
                     self.logger.info(f'{app_info["name"]} is installed (version: {version})')
                     return True, version
 

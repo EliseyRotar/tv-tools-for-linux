@@ -55,7 +55,7 @@ class AndroidTVTools:
                 timeout=3
             )
             return result.returncode == 0
-        except:
+        except (subprocess.SubprocessError, OSError):
             return False
 
     def check_and_install_adb(self) -> bool:
@@ -249,48 +249,6 @@ class AndroidTVTools:
                 'Try connecting via USB first, then enable wireless debugging'
             ]
             self.ui.print_error_with_solutions('Connection failed', solutions)
-
-    def _scan_and_connect(self):
-        from core.network_scanner import NetworkScanner
-
-        self.ui.clear_screen()
-        self.ui.print_info('Scanning network for Android TV devices...')
-        print()
-
-        scanner = NetworkScanner(self.adb, self.logger)
-        success, devices = scanner.scan_network()
-
-        if not success or not devices:
-            self.ui.print_warning('No devices found on the network')
-            self.ui.print_info('Make sure your Android TV is:')
-            print('  - Connected to the same Wi-Fi network')
-            print('  - Has USB debugging enabled')
-            print('  - Has Network debugging enabled')
-            self.ui.wait_for_key()
-            return
-
-        if len(devices) == 1:
-            device = devices[0]
-            if self.ui.confirm(f"Connect to {device['ip']}?", default=True):
-                self._connect_to_ip(device['ip'])
-        else:
-            print()
-            self.ui.print_info('Select a device to connect:')
-            for i, device in enumerate(devices, 1):
-                print(f"  {i}. {device['ip']} ({device['hostname']})")
-            print(f"  0. Cancel")
-            print()
-
-            choice = self.ui.get_input('Enter device number', default='0')
-            try:
-                idx = int(choice) - 1
-                if 0 <= idx < len(devices):
-                    device = devices[idx]
-                    self._connect_to_ip(device['ip'])
-            except ValueError:
-                self.ui.print_error('Invalid choice')
-
-        self.ui.wait_for_key()
 
     def _show_connection_history(self):
         self.ui.clear_screen()

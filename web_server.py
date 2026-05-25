@@ -7,6 +7,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 import secrets
 import json
 from datetime import datetime, timedelta
@@ -92,8 +93,14 @@ class WebServer:
                         template_folder='web/templates',
                         static_folder='web/static')
         
-        self.app.secret_key = secrets.token_hex(32)
-        
+        self.config_dir = Path.home() / '.android-tv-tools'
+        self.app.secret_key = self._load_or_create_secret_key()
+        self.app.config['SESSION_COOKIE_HTTPONLY'] = True
+        self.app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
+        self._generated_password = None
+        self._username, self._password_hash = self._load_or_create_credentials()
+
         self.config_manager = ConfigManager()
         self.config = self.config_manager.get_config()
         self.adb = ADBManager(default_timeout=self.config.default_timeout)
@@ -323,7 +330,7 @@ class WebServer:
                     s = data_part or storage_info[0]
                     try:
                         storage_val = float(s.get('use_percent', '0').replace('%', ''))
-                    except:
+                    except (ValueError, TypeError, AttributeError):
                         storage_val = 0
                 battery_val = float(battery_info.get('level', 0)) if battery_info else 0
                 
@@ -2386,25 +2393,76 @@ class WebServer:
                 'url': url
             })
     
+    def _load_or_create_secret_key(self) -> str:
+        key_file = self.config_dir / 'flask_secret.key'
+        try:
+            if key_file.exists():
+                existing = key_file.read_text().strip()
+                if existing:
+                    return existing
+            key = secrets.token_hex(32)
+            key_file.parent.mkdir(parents=True, exist_ok=True)
+            key_file.write_text(key)
+            os.chmod(key_file, 0o600)
+            return key
+        except OSError:
+            return secrets.token_hex(32)
+
+    def _load_or_create_credentials(self):
+        # Environment variables take priority (headless/scripted deployments).
+        env_user = os.environ.get('TVTOOLS_WEB_USER')
+        env_pass = os.environ.get('TVTOOLS_WEB_PASSWORD')
+        if env_user and env_pass:
+            return env_user, generate_password_hash(env_pass)
+
+        cred_file = self.config_dir / 'web_credentials.json'
+        try:
+            if cred_file.exists():
+                data = json.loads(cred_file.read_text())
+                return data['username'], data['password_hash']
+        except (OSError, ValueError, KeyError):
+            pass
+
+        # First run: generate a random password so the UI is never protected by
+        # well-known default credentials. The plaintext is shown once at startup.
+        username = 'admin'
+        password = secrets.token_urlsafe(12)
+        self._generated_password = password
+        try:
+            cred_file.parent.mkdir(parents=True, exist_ok=True)
+            cred_file.write_text(json.dumps({
+                'username': username,
+                'password_hash': generate_password_hash(password)
+            }))
+            os.chmod(cred_file, 0o600)
+        except OSError:
+            pass
+        return username, generate_password_hash(password)
+
     def is_authenticated(self):
+        # Loopback connections are trusted for local single-user convenience.
+        # request.remote_addr is the real TCP peer (no ProxyFix is installed),
+        # so a LAN/remote client cannot forge a 127.0.0.1 source here.
         if request.remote_addr in ['127.0.0.1', 'localhost', '::1']:
             return True
-        
+
         return session.get('authenticated', False)
-    
+
     def authenticate(self, username: str, password: str):
-        default_username = 'admin'
-        default_password = 'admin'
-        
-        return username == default_username and password == default_password
-    
+        return username == self._username and check_password_hash(self._password_hash, password)
+
     def run(self, host='127.0.0.1', port=5000, debug=False):
         self.logger.info(f'Starting web server on {host}:{port}')
         print(f'\n🌐 Web UI available at: http://{host}:{port}')
         print(f'📊 Dashboard: http://{host}:{port}/')
-        print(f'🔐 Default credentials: admin / admin')
+        if self._generated_password:
+            print(f'🔐 Login: {self._username} / {self._generated_password}')
+            print('   (generated on first run, saved to ~/.android-tv-tools/web_credentials.json)')
+        else:
+            print(f'🔐 Login as "{self._username}" with your saved password')
+            print('   (set TVTOOLS_WEB_USER / TVTOOLS_WEB_PASSWORD to override)')
         print(f'\nPress Ctrl+C to stop the server\n')
-        
+
         self.app.run(host=host, port=port, debug=debug, threaded=True)
 
 

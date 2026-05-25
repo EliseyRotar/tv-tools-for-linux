@@ -1,17 +1,21 @@
 import json
+import threading
 from pathlib import Path
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List, Dict, Tuple
 from models.config import Configuration
 
 
 class ConfigManager:
     _instance = None
+    _lock = threading.Lock()
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance._initialized = False
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = super().__new__(cls)
+                    cls._instance._initialized = False
         return cls._instance
 
     def __init__(self):
@@ -106,7 +110,7 @@ class ConfigManager:
         except (IOError, OSError):
             pass
 
-    def get_device_history(self, limit: int = 10) -> list[str]:
+    def get_device_history(self, limit: int = 10) -> List[str]:
         if not self.device_history_file.exists():
             return []
 
@@ -117,7 +121,7 @@ class ConfigManager:
         except (IOError, OSError):
             return []
 
-    def get_connection_history(self, limit: int = 10) -> list[dict]:
+    def get_connection_history(self, limit: int = 10) -> List[Dict]:
         if not self.device_history_file.exists():
             return []
 
@@ -142,7 +146,7 @@ class ConfigManager:
         except (IOError, OSError):
             return []
 
-    def get_last_connected_device(self) -> Optional[tuple[str, str, str]]:
+    def get_last_connected_device(self) -> Optional[Tuple[str, str, str]]:
         history = self.get_device_history(limit=1)
         if not history:
             return None
