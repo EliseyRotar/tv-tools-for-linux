@@ -285,7 +285,7 @@ class ADBManager:
         return all(0 <= int(octet) <= 255 for octet in octets)
 
     def _validate_port(self, port: int) -> bool:
-        return 1 <= port <= 65535
+        return 1 <= int(port) <= 65535
 
     def _sanitize_shell_input(self, input_str: str) -> str:
         # Commands are passed to subprocess with shell=False, so there is no
