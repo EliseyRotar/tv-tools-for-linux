@@ -26,7 +26,14 @@ async function loadApps() {
         
         if (response.success) {
             allApps = response.packages;
-            displayApps(allApps);
+
+            //Note: don't use displayApps(allApps) here. 
+            // It ignores currentFilter and the search input, so deleting an app from "User Apps" 
+            // would unexpectedly throw you back to the "All Apps" tab. 
+            // Using filterApps() keeps the current tab and search state intact.
+            //
+            //displayApps(allApps); 
+            filterApps();
         } else {
             showToast('Failed to load apps', 'error');
         }
